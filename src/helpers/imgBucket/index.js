@@ -1,3 +1,3 @@
-import { BUCKET_TYPE } from 'config'
+// import { BUCKET_TYPE } from 'config'
 
-module.exports = require(`./${BUCKET_TYPE}`)
+// module.exports = require(`./${BUCKET_TYPE}`)
