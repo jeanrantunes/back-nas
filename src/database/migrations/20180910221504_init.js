@@ -132,6 +132,10 @@ export const up = knex =>
         .notNullable()
         .defaultTo(true)
       table
+        .boolean('artificialAirways')
+        .notNullable()
+        .defaultTo(true)
+      table
         .boolean('vasoactiveDrugs')
         .notNullable()
         .defaultTo(false)

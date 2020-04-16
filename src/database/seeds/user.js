@@ -16,7 +16,9 @@ export const seed = async knex => {
     }
   ])
   const uidPatient1 = uuidv4()
+  const namePatient1 = 'Seu Zé'
   const uidPatient2 = uuidv4()
+  const namePatient2 = 'Dona Maria'
   const uidPatient3 = uuidv4()
   const uidPatient4 = uuidv4()
   const uidPatient5 = uuidv4()
@@ -26,14 +28,14 @@ export const seed = async knex => {
   await knex('patients').insert([
     {
       id: uidPatient1,
-      name: 'Seu Zé',
+      name: namePatient1,
       hospitalizationDate: new Date(),
       birthday: new Date('06/07/1993'),
       bed: 'A'
     },
     {
       id: uidPatient2,
-      name: 'Dona Maria',
+      name: namePatient2,
       outcome: 'death',
       hospitalizationDate: new Date('2020-03-07T14:55:00.000Z'),
       bed: 'B'
@@ -219,6 +221,7 @@ export const seed = async knex => {
       administrativeAndManagerialTasks: '8a',
       ventilatorySupport: false,
       lungFunction: false,
+      artificialAirways: true,
       vasoactiveDrugs: false,
       intravenousReplacement: false,
       monitoringOfTheLeftAtrium: false,
@@ -245,6 +248,7 @@ export const seed = async knex => {
       administrativeAndManagerialTasks: '8b',
       ventilatorySupport: false,
       lungFunction: true,
+      artificialAirways: false,
       vasoactiveDrugs: false,
       intravenousReplacement: true,
       monitoringOfTheLeftAtrium: true,

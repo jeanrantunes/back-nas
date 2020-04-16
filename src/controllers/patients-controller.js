@@ -3,7 +3,6 @@ import HospitalizationReasonPatient from 'models/HospitalizationReasonPatients'
 import ComorbiditiesPatient from 'models/ComorbiditiesPatients'
 import Comorbidities from 'models/Comorbidities'
 import HospitalizationReason from 'models/hospitalizationReason'
-
 import Nas from 'models/Nas'
 
 const PatientsController = {
@@ -53,7 +52,8 @@ const PatientsController = {
     })
 
     const data = [...(await patients.fetchAll())]
-
+    
+    /* get comorbidities hospitaliation reason and nas */
     const p = data.map(async (patient, index) => {
       if (comorbidities) {
         const comorbiditiesPatient = await new ComorbiditiesPatient()
@@ -94,11 +94,24 @@ const PatientsController = {
           )
         }
       }
-      return patient
+
+      const now = new Date()
+      const to = new Date(now.setDate(now.getDate() + 1))
+
+      const nas = await new Nas()
+        .where('patientId', patient.attributes.id)
+        .where('created_at', '>=', new Date().toLocaleDateString())
+        .where('created_at', '<=', to.toLocaleDateString())
+        .count()
+
+      return {
+        ...patient.attributes,
+        dailyNas: parseInt(nas) > 0
+      }
     })
 
-    const total = await new Patient().count()
-
+    const total = parseInt(await new Patient().count())
+    
     return {
       data: await Promise.all(p),
       metadata: {
@@ -122,12 +135,22 @@ const PatientsController = {
       .where('patientId', ctx.params.id)
       .fetchAll()
 
+    const now = new Date()
+    const to = new Date(now.setDate(now.getDate() + 1))
+
+    const nas = await new Nas()
+      .where('patientId', ctx.params.id)
+      .where('created_at', '>=', new Date().toLocaleDateString())
+      .where('created_at', '<=', to.toLocaleDateString())
+      .count()
+
     return {
       ...patient.attributes,
       hospitalizationReason: reasons.map(
         r => r.attributes.hospitalizationReasonId
       ),
-      comorbidities: comorbidities.map(r => r.attributes.comorbiditiesId)
+      comorbidities: comorbidities.map(r => r.attributes.comorbiditiesId),
+      dailyNas: parseInt(nas) > 0
     }
   },
 

@@ -9,28 +9,39 @@ const UsersValidate = {
         patientId: Joi.string()
           .guid()
           .required(),
-        monitoringAndControls: Joi.string().valid('1a', '1b', '1c'),
-        laboratoryInvestigations: Joi.boolean(),
-        medicationExceptVasoactiveDrugs: Joi.boolean(),
-        hygieneProcedures: Joi.string().valid('4a', '4b', '4c'),
-        caringForDrains: Joi.boolean(),
-        mobilizationAndPositioning: Joi.string().valid('6a', '6b', '6c'),
-        supportAndCare: Joi.string().valid('7a', '7b'),
-        administrativeAndManagerialTasks: Joi.string().valid('8a', '8b', '8c'),
-        ventilatorySupport: Joi.boolean(),
-        lungFunction: Joi.boolean(),
-        vasoactiveDrugs: Joi.boolean(),
-        intravenousReplacement: Joi.boolean(),
-        monitoringOfTheLeftAtrium: Joi.boolean(),
-        cardiorespiratoryResumption: Joi.boolean(),
-        hemofiltrationTechniques: Joi.boolean(),
-        urineOutput: Joi.boolean(),
-        intracranialPressure: Joi.boolean(),
-        acidosisTreatment: Joi.boolean(),
-        intravenousHyperalimentation: Joi.boolean(),
-        enteralFeeding: Joi.boolean(),
-        specificInterventionsInTheUnit: Joi.boolean(),
-        specificInterventionsOutsideTheUnit: Joi.boolean()
+        monitoringAndControls: Joi.string()
+          .valid('1a', '1b', '1c')
+          .default('1a'),
+        laboratoryInvestigations: Joi.boolean().default(false),
+        medicationExceptVasoactiveDrugs: Joi.boolean().default(true),
+        hygieneProcedures: Joi.string()
+          .valid('4a', '4b', '4c')
+          .default('4a'),
+        caringForDrains: Joi.boolean().default(true),
+        mobilizationAndPositioning: Joi.string()
+          .valid('6a', '6b', '6c')
+          .default('6b'),
+        supportAndCare: Joi.string()
+          .valid('7a', '7b')
+          .default('7a'),
+        administrativeAndManagerialTasks: Joi.string()
+          .valid('8a', '8b', '8c')
+          .default('8a'),
+        ventilatorySupport: Joi.boolean().default(false),
+        lungFunction: Joi.boolean().default(true),
+        artificialAirways: Joi.boolean().default(true),
+        vasoactiveDrugs: Joi.boolean().default(false),
+        intravenousReplacement: Joi.boolean().default(true),
+        monitoringOfTheLeftAtrium: Joi.boolean().default(true),
+        cardiorespiratoryResumption: Joi.boolean().default(false),
+        hemofiltrationTechniques: Joi.boolean().default(false),
+        urineOutput: Joi.boolean().default(false),
+        intracranialPressure: Joi.boolean().default(false),
+        acidosisTreatment: Joi.boolean().default(false),
+        intravenousHyperalimentation: Joi.boolean().default(false),
+        enteralFeeding: Joi.boolean().default(true),
+        specificInterventionsInTheUnit: Joi.boolean().default(false),
+        specificInterventionsOutsideTheUnit: Joi.boolean().default(false)
       }
     }),
 
@@ -40,28 +51,39 @@ const UsersValidate = {
         patientId: Joi.string()
           .guid()
           .required(),
-        monitoringAndControls: Joi.string().valid('1a', '1b', '1c'),
-        laboratoryInvestigations: Joi.boolean(),
-        medicationExceptVasoactiveDrugs: Joi.boolean(),
-        hygieneProcedures: Joi.string().valid('4a', '4b', '4c'),
-        caringForDrains: Joi.boolean(),
-        mobilizationAndPositioning: Joi.string().valid('6a', '6b', '6c'),
-        supportAndCare: Joi.string().valid('7a', '7b'),
-        administrativeAndManagerialTasks: Joi.string().valid('8a', '8b', '8c'),
-        ventilatorySupport: Joi.boolean(),
-        lungFunction: Joi.boolean(),
-        vasoactiveDrugs: Joi.boolean(),
-        intravenousReplacement: Joi.boolean(),
-        monitoringOfTheLeftAtrium: Joi.boolean(),
-        cardiorespiratoryResumption: Joi.boolean(),
-        hemofiltrationTechniques: Joi.boolean(),
-        urineOutput: Joi.boolean(),
-        intracranialPressure: Joi.boolean(),
-        acidosisTreatment: Joi.boolean(),
-        intravenousHyperalimentation: Joi.boolean(),
-        enteralFeeding: Joi.boolean(),
-        specificInterventionsInTheUnit: Joi.boolean(),
-        specificInterventionsOutsideTheUnit: Joi.boolean()
+        monitoringAndControls: Joi.string()
+          .valid('1a', '1b', '1c')
+          .default('1a'),
+        laboratoryInvestigations: Joi.boolean().default(false),
+        medicationExceptVasoactiveDrugs: Joi.boolean().default(true),
+        hygieneProcedures: Joi.string()
+          .valid('4a', '4b', '4c')
+          .default('4a'),
+        caringForDrains: Joi.boolean().default(true),
+        mobilizationAndPositioning: Joi.string()
+          .valid('6a', '6b', '6c')
+          .default('6b'),
+        supportAndCare: Joi.string()
+          .valid('7a', '7b')
+          .default('7a'),
+        administrativeAndManagerialTasks: Joi.string()
+          .valid('8a', '8b', '8c')
+          .default('8a'),
+        ventilatorySupport: Joi.boolean().default(false),
+        lungFunction: Joi.boolean().default(true),
+        artificialAirways: Joi.boolean().default(true),
+        vasoactiveDrugs: Joi.boolean().default(false),
+        intravenousReplacement: Joi.boolean().default(true),
+        monitoringOfTheLeftAtrium: Joi.boolean().default(true),
+        cardiorespiratoryResumption: Joi.boolean().default(false),
+        hemofiltrationTechniques: Joi.boolean().default(false),
+        urineOutput: Joi.boolean().default(false),
+        intracranialPressure: Joi.boolean().default(false),
+        acidosisTreatment: Joi.boolean().default(false),
+        intravenousHyperalimentation: Joi.boolean().default(false),
+        enteralFeeding: Joi.boolean().default(true),
+        specificInterventionsInTheUnit: Joi.boolean().default(false),
+        specificInterventionsOutsideTheUnit: Joi.boolean().default(false)
       }
     })
 }
