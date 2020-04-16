@@ -52,6 +52,7 @@ const PatientsController = {
     })
 
     const data = [...(await patients.fetchAll())]
+    
     /* get comorbidities hospitaliation reason and nas */
     const p = data.map(async (patient, index) => {
       if (comorbidities) {
@@ -110,7 +111,7 @@ const PatientsController = {
     })
 
     const total = parseInt(await new Patient().count())
-
+    
     return {
       data: await Promise.all(p),
       metadata: {
