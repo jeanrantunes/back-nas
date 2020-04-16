@@ -9,6 +9,10 @@ const user = Model({
       arguments
     )
 
+    delete user.password
+    delete user.resetPasswordToken
+    delete user.resetPasswordExpires
+
     return user
   }
 })
