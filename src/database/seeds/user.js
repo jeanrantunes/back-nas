@@ -29,6 +29,7 @@ export const seed = async knex => {
     {
       id: uidPatient1,
       name: namePatient1,
+      toSearch: 'SEU ZE',
       hospitalizationDate: new Date(),
       birthday: new Date('06/07/1993'),
       bed: 'A'
@@ -36,6 +37,7 @@ export const seed = async knex => {
     {
       id: uidPatient2,
       name: namePatient2,
+      toSearch: 'DONA MARIA',
       outcome: 'death',
       hospitalizationDate: new Date('2020-03-07T14:55:00.000Z'),
       bed: 'B'
@@ -43,6 +45,7 @@ export const seed = async knex => {
     {
       id: uidPatient7,
       name: 'Maria Luiza',
+      toSearch: 'MARIA LUIZA',
       birthday: new Date('06/25/1763'),
       hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'B'
@@ -50,6 +53,7 @@ export const seed = async knex => {
     {
       id: uidPatient3,
       name: 'Seu Jorge',
+      toSearch: 'SEU JORGE',
       birthday: new Date('06/25/1933'),
       hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'C'
@@ -57,6 +61,7 @@ export const seed = async knex => {
     {
       id: uidPatient4,
       name: 'José Luiz',
+      toSearch: 'JOSE LUIZ',
       birthday: new Date('06/25/1936'),
       hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'D'
@@ -64,6 +69,7 @@ export const seed = async knex => {
     {
       id: uidPatient5,
       name: 'Neymar',
+      toSearch: 'NEYMAR',
       birthday: new Date('06/25/1963'),
       hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'E'
@@ -71,6 +77,7 @@ export const seed = async knex => {
     {
       id: uidPatient6,
       name: 'Seu Paulo',
+      toSearch: 'SEU PAULO',
       birthday: new Date('06/25/1863'),
       hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'F'
@@ -209,7 +216,7 @@ export const seed = async knex => {
 
   await knex('nas').insert([
     {
-      id: uuidv4(),
+      // id: uuidv4(),
       patientId: uidPatient1,
       monitoringAndControls: '1a',
       laboratoryInvestigations: false,
@@ -233,10 +240,12 @@ export const seed = async knex => {
       intravenousHyperalimentation: false,
       enteralFeeding: false,
       specificInterventionsInTheUnit: false,
-      specificInterventionsOutsideTheUnit: true
+      specificInterventionsOutsideTheUnit: true,
+      created_at: new Date(),
+      updated_at: new Date()
     },
     {
-      id: uuidv4(),
+      // id: uuidv4(),
       patientId: uidPatient2,
       monitoringAndControls: '1a',
       laboratoryInvestigations: false,
@@ -260,7 +269,9 @@ export const seed = async knex => {
       intravenousHyperalimentation: false,
       enteralFeeding: true,
       specificInterventionsInTheUnit: false,
-      specificInterventionsOutsideTheUnit: false
+      specificInterventionsOutsideTheUnit: false,
+      created_at: new Date(),
+      updated_at: new Date()
     }
   ])
 }

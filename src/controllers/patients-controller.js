@@ -15,7 +15,16 @@ const PatientsController = {
       hospitalizationReason
     } = ctx.query
 
-    let { itemsPerPage, page, orderBy, orderType } = ctx.query
+    let {
+      itemsPerPage,
+      page,
+      orderBy,
+      orderType,
+      hospitalizationStartDate,
+      hospitalizationEndDate,
+      outcomeStartDate,
+      outcomeEndDate
+    } = ctx.query
 
     if (!itemsPerPage) {
       itemsPerPage = 10
@@ -33,7 +42,7 @@ const PatientsController = {
       orderType = 'ASC'
     }
 
-    const patients = await new Patient().query(function(qb) {
+    const patientsFiltered = await new Patient().query(function(qb) {
       if (name) {
         const nameToSearch = name
           .normalize('NFD')
@@ -44,17 +53,46 @@ const PatientsController = {
       if (outcome) {
         qb.where('outcome', outcome)
       }
+      if (hospitalizationStartDate && hospitalizationEndDate) {
+        qb.where(
+          'hospitalizationDate',
+          '>=',
+          new Date(hospitalizationStartDate)
+        ).where('hospitalizationDate', '<=', new Date(hospitalizationEndDate))
+      } else if (hospitalizationStartDate) {
+        qb.where(
+          'hospitalizationDate',
+          '>=',
+          new Date(hospitalizationStartDate)
+        )
+      } else if (hospitalizationEndDate) {
+        qb.where('hospitalizationDate', '<=', new Date(hospitalizationEndDate))
+      }
+      if (outcomeStartDate && outcomeEndDate) {
+        qb.where('outcomeDate', '>=', new Date(outcomeStartDate)).where(
+          'outcomeDate',
+          '<=',
+          new Date(outcomeEndDate)
+        )
+      } else if (outcomeStartDate) {
+        qb.where('outcomeDate', '>=', new Date(outcomeStartDate))
+      } else if (outcomeEndDate) {
+        qb.where('outcomeDate', '<=', new Date(outcomeEndDate))
+      }
       if (bed) {
         qb.where('bed', bed)
       }
-      qb.orderBy(orderBy, orderType)
-      qb.offset(page * itemsPerPage).limit(itemsPerPage)
     })
 
-    const data = [...(await patients.fetchAll())]
-    
+    const patientWithPagination = await patientsFiltered
+      .query(function(qb) {
+        qb.orderBy(orderBy, orderType)
+        qb.offset(page * itemsPerPage).limit(itemsPerPage)
+      })
+      .fetchAll()
+
     /* get comorbidities hospitaliation reason and nas */
-    const p = data.map(async (patient, index) => {
+    const p = patientWithPagination.map(async (patient, index) => {
       if (comorbidities) {
         const comorbiditiesPatient = await new ComorbiditiesPatient()
           .where('patientId', patient.attributes.id)
@@ -110,14 +148,32 @@ const PatientsController = {
       }
     })
 
-    const total = parseInt(await new Patient().count())
-    
+    const total = parseInt(
+      await new Patient()
+        .query(function(qb) {
+          if (name) {
+            const nameToSearch = name
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .toUpperCase()
+            qb.where('toSearch', 'ilike', `%${nameToSearch}%`)
+          }
+          if (outcome) {
+            qb.where('outcome', outcome)
+          }
+          if (bed) {
+            qb.where('bed', bed)
+          }
+        })
+        .count()
+    )
+
     return {
       data: await Promise.all(p),
       metadata: {
         total,
-        page,
-        itemsPerPage
+        page: parseInt(page),
+        itemsPerPage: parseInt(itemsPerPage)
       }
     }
   },
@@ -171,8 +227,6 @@ const PatientsController = {
       hospitalizationDate: body.hospitalizationDate,
       bed: body.bed
     }).save()
-
-    delete patient.attributes.toSearch
 
     if (!hospitalizationReason && !comorbidities) {
       return {

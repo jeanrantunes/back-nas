@@ -82,7 +82,8 @@ export const up = knex =>
     })
     .createTable('nas', table => {
       table
-        .uuid('id')
+        // .uuid('id')
+        .increments()
         .unique()
         .primary()
         .notNullable()

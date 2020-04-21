@@ -3,7 +3,7 @@ import Patients from './Patients'
 
 const nas = Model({
   tableName: 'nas',
-  uuid: true,
+  // uuid: true,
   hasTimestamps: true,
   patients: function() {
     return this.belongsTo(Patients)
