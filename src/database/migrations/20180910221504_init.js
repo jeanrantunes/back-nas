@@ -11,10 +11,11 @@ export const up = knex =>
         .string('email')
         .unique()
         .notNullable()
-      table.string('password').notNullable()
+      table.string('password')
       table.enum('role', ['ADMIN', 'USER'])
-      table.string('resetPasswordToken')
-      table.bigInteger('resetPasswordExpires')
+      table.string('signup_token')
+      table.string('reset_password_token')
+      table.bigInteger('reset_password_expires')
       table.timestamps(true, true)
     })
     .createTable('patients', table => {
@@ -24,38 +25,39 @@ export const up = knex =>
         .primary()
         .notNullable()
       table.string('name').notNullable()
-      table.date('birthday')
-      table.string('toSearch')
+      table.datetime('birthday')
+      table.string('to_search')
       table
         .enu('outcome', ['pending', 'death', 'discharge'])
         .defaultTo('pending')
-      table.integer('saps3').defaultTo(0)
-      table.datetime('outcomeDate')
-      table.datetime('hospitalizationDate')
+      table.integer('saps_3').defaultTo(0)
+      table.datetime('outcome_date')
+      table.datetime('hospitalization_date')
       table.enu('bed', ['A', 'B', 'C', 'D', 'E', 'F'])
     })
-    .createTable('hospitalizationReason', table => {
+    .createTable('hospitalization_reason', table => {
       table
         .uuid('id')
         .unique()
         .primary()
         .notNullable()
       table.string('name').notNullable()
+      table.string('to_search')
     })
-    .createTable('hospitalizationReasonPatients', table => {
+    .createTable('hospitalization_reason_patients', table => {
+      // table
+      //   .uuid('id')
+      //   .unique()
+      //   .primary()
+      //   .notNullable()
       table
-        .uuid('id')
-        .unique()
-        .primary()
-        .notNullable()
-      table
-        .uuid('patientId')
+        .uuid('patient_id')
         .references('id')
         .inTable('patients')
       table
-        .uuid('hospitalizationReasonId')
+        .uuid('hospitalization_reason_id')
         .references('id')
-        .inTable('hospitalizationReason')
+        .inTable('hospitalization_reason')
     })
     .createTable('comorbidities', table => {
       table
@@ -64,19 +66,20 @@ export const up = knex =>
         .primary()
         .notNullable()
       table.string('name').notNullable()
+      table.string('to_search')
     })
-    .createTable('comorbiditiesPatients', table => {
+    .createTable('comorbidities_patients', table => {
+      // table
+      //   .uuid('id')
+      //   .unique()
+      //   .primary()
+      //   .notNullable()
       table
-        .uuid('id')
-        .unique()
-        .primary()
-        .notNullable()
-      table
-        .uuid('patientId')
+        .uuid('patient_id')
         .references('id')
         .inTable('patients')
       table
-        .uuid('comorbiditiesId')
+        .uuid('comorbidity_id')
         .references('id')
         .inTable('comorbidities')
     })
@@ -87,112 +90,113 @@ export const up = knex =>
         .unique()
         .primary()
         .notNullable()
-      table.uuid('patientId')
+      table.uuid('patient_id')
       table
-        .foreign('patientId')
+        .foreign('patient_id')
         .references('id')
         .inTable('patients')
       table
-        .enu('monitoringAndControls', ['1a', '1b', '1c'])
+        .enu('monitoring_and_controls', ['1a', '1b', '1c'])
         .notNullable()
         .defaultTo('1b')
       table
-        .boolean('laboratoryInvestigations')
+        .boolean('laboratory_investigations')
         .notNullable()
         .defaultTo(true)
       table
-        .boolean('medicationExceptVasoactiveDrugs')
+        .boolean('medication_except_vasoactive_drugs')
         .notNullable()
         .defaultTo(true)
       table
-        .enu('hygieneProcedures', ['4a', '4b', '4c'])
+        .enu('hygiene_procedures', ['4a', '4b', '4c'])
         .notNullable()
         .defaultTo('4a')
       table
-        .boolean('caringForDrains')
+        .boolean('caring_for_drains')
         .notNullable()
         .defaultTo(true)
       table
-        .enu('mobilizationAndPositioning', ['6a', '6b', '6c'])
+        .enu('mobilization_and_positioning', ['6a', '6b', '6c'])
         .notNullable()
         .defaultTo('6b')
       table
-        .enu('supportAndCare', ['7a', '7b'])
+        .enu('support_and_care', ['7a', '7b'])
         .notNullable()
         .defaultTo('7a')
       table
-        .enu('administrativeAndManagerialTasks', ['8a', '8b', '8c'])
+        .enu('administrative_and_managerial_tasks', ['8a', '8b', '8c'])
         .notNullable()
         .defaultTo('8a')
       table
-        .boolean('ventilatorySupport')
+        .boolean('ventilatory_support')
         .notNullable()
         .defaultTo(true)
       table
-        .boolean('lungFunction')
+        .boolean('lung_function')
         .notNullable()
         .defaultTo(true)
       table
-        .boolean('artificialAirways')
+        .boolean('artificial_airways')
         .notNullable()
         .defaultTo(true)
       table
-        .boolean('vasoactiveDrugs')
+        .boolean('vasoactive_drugs')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('intravenousReplacement')
+        .boolean('intravenous_replacement')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('monitoringOfTheLeftAtrium')
+        .boolean('monitoring_of_the_left_atrium')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('cardiorespiratoryResumption')
+        .boolean('cardiorespiratory_resumption')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('hemofiltrationTechniques')
+        .boolean('hemofiltration_techniques')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('urineOutput')
+        .boolean('urine_output')
         .notNullable()
         .defaultTo(true)
       table
-        .boolean('intracranialPressure')
+        .boolean('intracranial_pressure')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('acidosisTreatment')
+        .boolean('acidosis_treatment')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('intravenousHyperalimentation')
+        .boolean('intravenous_hyperalimentation')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('enteralFeeding')
+        .boolean('enteral_feeding')
         .notNullable()
         .defaultTo(true)
       table
-        .boolean('specificInterventionsInTheUnit')
+        .boolean('specific_interventions_in_the_unit')
         .notNullable()
         .defaultTo(false)
       table
-        .boolean('specificInterventionsOutsideTheUnit')
+        .boolean('specific_interventions_outside_the_unit')
         .notNullable()
         .defaultTo(false)
       table.timestamps()
+      table.datetime('nas_date').notNullable()
     })
 
 export const down = knex =>
   knex.schema
     .dropTableIfExists('users')
-    .dropTableIfExists('hospitalizationReasonPatients')
-    .dropTableIfExists('hospitalizationReason')
-    .dropTableIfExists('comorbiditiesPatients')
+    .dropTableIfExists('hospitalization_reason_patients')
+    .dropTableIfExists('hospitalization_reason')
+    .dropTableIfExists('comorbidities_patients')
     .dropTableIfExists('nas')
     .dropTableIfExists('patients')
     .dropTableIfExists('comorbidities')

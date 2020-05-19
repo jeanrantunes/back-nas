@@ -7,17 +7,17 @@ const UsersValidate = {
     validateSchema({
       body: {
         name: Joi.string().required(),
-        birthday: Joi.string().required(),
+        birthday: Joi.date().max('now'),
         outcome: Joi.string()
           .valid('pending', 'death', 'discharge')
           .default('pending'),
         comorbidities: Joi.array().items(Joi.string()),
-        saps3: Joi.number()
+        saps_3: Joi.number()
           .integer()
           .default(0),
-        outcomeDate: Joi.date(),
-        hospitalizationDate: Joi.string().required(),
-        hospitalizationReason: Joi.array().items(Joi.string()),
+        outcome_date: Joi.date().max('now'),
+        hospitalization_date: Joi.date().max('now'),
+        hospitalization_reason: Joi.array().items(Joi.string()),
         bed: Joi.string()
           .valid('A', 'B', 'C', 'D', 'E', 'F')
           .required()
@@ -28,17 +28,17 @@ const UsersValidate = {
     validateSchema({
       body: {
         name: Joi.string().required(),
-        birthday: Joi.string().required(),
+        birthday: Joi.date().max('now'),
         outcome: Joi.string()
           .valid('pending', 'death', 'discharge')
           .default('pending'),
         comorbidities: Joi.array().items(Joi.string()),
-        saps3: Joi.number()
+        saps_3: Joi.number()
           .integer()
           .default(0),
-        outcomeDate: Joi.date(),
-        hospitalizationDate: Joi.string().required(),
-        hospitalizationReason: Joi.array().items(Joi.string()),
+        outcome_date: Joi.date().max('now'),
+        hospitalization_date: Joi.date().max('now'),
+        hospitalization_reason: Joi.array().items(Joi.string()),
         bed: Joi.string()
           .valid('A', 'B', 'C', 'D', 'E', 'F')
           .required()

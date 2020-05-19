@@ -40,6 +40,7 @@ app.use(
     getToken
   }).unless({
     path: [
+      '/v1/users/signup-confirm',
       '/v1/users/login',
       '/v1/users/signup',
       '/v1/users/password',

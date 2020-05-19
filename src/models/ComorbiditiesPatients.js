@@ -3,8 +3,8 @@ import Patients from './Patients'
 import Comorbidities from './Comorbidities'
 
 const comorbiditiesPatients = Model({
-  tableName: 'comorbiditiesPatients',
-  uuid: true,
+  tableName: 'comorbidities_patients',
+  // uuid: true,
   comorbidities: function() {
     return this.belongsTo(Comorbidities)
   },

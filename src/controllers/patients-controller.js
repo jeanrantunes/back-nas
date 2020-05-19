@@ -1,9 +1,11 @@
+import knex from 'knex'
 import Patient from 'models/Patients'
 import HospitalizationReasonPatient from 'models/HospitalizationReasonPatients'
 import ComorbiditiesPatient from 'models/ComorbiditiesPatients'
 import Comorbidities from 'models/Comorbidities'
 import HospitalizationReason from 'models/hospitalizationReason'
 import Nas from 'models/Nas'
+import { plusOneDay } from '../helpers/date'
 
 const PatientsController = {
   index: async ctx => {
@@ -12,34 +14,35 @@ const PatientsController = {
       outcome,
       bed,
       comorbidities,
-      hospitalizationReason
+      hospitalization_reason,
+      daily_nas
     } = ctx.query
 
     let {
-      itemsPerPage,
+      items_per_page,
       page,
-      orderBy,
-      orderType,
-      hospitalizationStartDate,
-      hospitalizationEndDate,
-      outcomeStartDate,
-      outcomeEndDate
+      order_by,
+      order_type,
+      hospitalization_start_date,
+      hospitalization_end_date,
+      outcome_start_date,
+      outcome_end_date
     } = ctx.query
 
-    if (!itemsPerPage) {
-      itemsPerPage = 10
+    if (!items_per_page) {
+      items_per_page = 10
     }
 
     if (!page) {
       page = 0
     }
 
-    if (!orderBy) {
-      orderBy = 'name'
+    if (!order_by) {
+      order_by = 'name'
     }
 
-    if (!orderType) {
-      orderType = 'ASC'
+    if (!order_type) {
+      order_type = 'ASC'
     }
 
     const patientsFiltered = await new Patient().query(function(qb) {
@@ -48,36 +51,57 @@ const PatientsController = {
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')
           .toUpperCase()
-        qb.where('toSearch', 'ilike', `%${nameToSearch}%`)
+        qb.where('to_search', 'like', `%${nameToSearch}%`)
       }
       if (outcome) {
         qb.where('outcome', outcome)
       }
-      if (hospitalizationStartDate && hospitalizationEndDate) {
+      if (hospitalization_start_date && hospitalization_end_date) {
         qb.where(
-          'hospitalizationDate',
+          'hospitalization_date',
           '>=',
-          new Date(hospitalizationStartDate)
-        ).where('hospitalizationDate', '<=', new Date(hospitalizationEndDate))
-      } else if (hospitalizationStartDate) {
-        qb.where(
-          'hospitalizationDate',
-          '>=',
-          new Date(hospitalizationStartDate)
-        )
-      } else if (hospitalizationEndDate) {
-        qb.where('hospitalizationDate', '<=', new Date(hospitalizationEndDate))
-      }
-      if (outcomeStartDate && outcomeEndDate) {
-        qb.where('outcomeDate', '>=', new Date(outcomeStartDate)).where(
-          'outcomeDate',
+          new Date(hospitalization_start_date)
+        ).where(
+          'hospitalization_date',
           '<=',
-          new Date(outcomeEndDate)
+          plusOneDay(hospitalization_end_date)
         )
-      } else if (outcomeStartDate) {
-        qb.where('outcomeDate', '>=', new Date(outcomeStartDate))
-      } else if (outcomeEndDate) {
-        qb.where('outcomeDate', '<=', new Date(outcomeEndDate))
+      } else if (hospitalization_start_date) {
+        qb.where(
+          'hospitalization_date',
+          '>=',
+          new Date(hospitalization_start_date)
+        )
+        qb.where(
+          'hospitalization_date',
+          '<=',
+          plusOneDay(hospitalization_start_date)
+        )
+      } else if (hospitalization_end_date) {
+        qb.where(
+          'hospitalization_date',
+          '>=',
+          plusOneDay(hospitalization_end_date)
+        )
+        qb.where(
+          'hospitalization_date',
+          '<=',
+          new Date(hospitalization_end_date)
+        )
+      }
+
+      if (outcome_start_date && outcome_end_date) {
+        qb.where('outcome_date', '>=', new Date(outcome_start_date)).where(
+          'outcome_date',
+          '<=',
+          plusOneDay(outcome_end_date)
+        )
+      } else if (outcome_start_date) {
+        qb.where('outcome_date', '>=', new Date(outcome_start_date))
+        qb.where('outcome_date', '<=', plusOneDay(outcome_start_date))
+      } else if (outcome_end_date) {
+        qb.where('outcome_date', '>=', plusOneDay(outcome_end_date))
+        qb.where('outcome_date', '<=', new Date(outcome_end_date))
       }
       if (bed) {
         qb.where('bed', bed)
@@ -86,67 +110,32 @@ const PatientsController = {
 
     const patientWithPagination = await patientsFiltered
       .query(function(qb) {
-        qb.orderBy(orderBy, orderType)
-        qb.offset(page * itemsPerPage).limit(itemsPerPage)
+        qb.orderBy(order_by, order_type)
+        qb.offset(page * items_per_page).limit(items_per_page)
       })
-      .fetchAll()
-
-    /* get comorbidities hospitaliation reason and nas */
-    const p = patientWithPagination.map(async (patient, index) => {
-      if (comorbidities) {
-        const comorbiditiesPatient = await new ComorbiditiesPatient()
-          .where('patientId', patient.attributes.id)
-          .fetchAll()
-
-        if (comorbiditiesPatient.length) {
-          const comorbiditiesName = comorbiditiesPatient.models.map(
-            async comorbidity => {
-              const c = await new Comorbidities({
-                id: comorbidity.attributes.comorbiditiesId
-              }).fetch()
-              return c.attributes
+      .fetchAll({
+        withRelated: [
+          daily_nas && {
+            nas: query => {
+              const now = new Date()
+              const to = new Date(now.setDate(now.getDate() + 1))
+              return query
+                .where('nas_date', '>=', new Date().toLocaleDateString())
+                .where('nas_date', '<=', to.toLocaleDateString())
+                .column('patient_id', 'id')
             }
-          )
-          patient.attributes.comorbidities = await Promise.all(
-            comorbiditiesName
-          )
+          },
+          hospitalization_reason && 'hospitalization_reason',
+          comorbidities && 'comorbidities'
+        ]
+      })
+      .map(patient => {
+        if (patient.relations.nas && patient.relations.nas.length) {
+          patient.attributes.daily_nas = true
         }
-      }
-
-      if (hospitalizationReason) {
-        const hospitalizationReasonPatient = await new HospitalizationReasonPatient()
-          .where('patientId', patient.attributes.id)
-          .fetchAll()
-
-        if (hospitalizationReasonPatient.length) {
-          const hospitalizationReasonName = hospitalizationReasonPatient.models.map(
-            async hospitalization => {
-              const h = await new HospitalizationReason({
-                id: hospitalization.attributes.hospitalizationReasonId
-              }).fetch()
-              return h.attributes
-            }
-          )
-          patient.attributes.hospitalizationReason = await Promise.all(
-            hospitalizationReasonName
-          )
-        }
-      }
-
-      const now = new Date()
-      const to = new Date(now.setDate(now.getDate() + 1))
-
-      const nas = await new Nas()
-        .where('patientId', patient.attributes.id)
-        .where('created_at', '>=', new Date().toLocaleDateString())
-        .where('created_at', '<=', to.toLocaleDateString())
-        .count()
-
-      return {
-        ...patient.attributes,
-        dailyNas: parseInt(nas) > 0
-      }
-    })
+        delete patient.relations.nas
+        return patient
+      })
 
     const total = parseInt(
       await new Patient()
@@ -156,7 +145,7 @@ const PatientsController = {
               .normalize('NFD')
               .replace(/[\u0300-\u036f]/g, '')
               .toUpperCase()
-            qb.where('toSearch', 'ilike', `%${nameToSearch}%`)
+            qb.where('to_search', 'like', `%${nameToSearch}%`)
           }
           if (outcome) {
             qb.where('outcome', outcome)
@@ -169,256 +158,149 @@ const PatientsController = {
     )
 
     return {
-      data: await Promise.all(p),
+      data: patientWithPagination,
       metadata: {
         total,
         page: parseInt(page),
-        itemsPerPage: parseInt(itemsPerPage)
+        items_per_page: parseInt(items_per_page)
       }
     }
   },
 
   show: async ctx => {
-    const patient = await new Patient({ id: ctx.params.id }).fetch()
-
-    delete patient.attributes.toSearch
-
-    const reasons = await new HospitalizationReasonPatient()
-      .where('patientId', ctx.params.id)
-      .fetchAll()
-
-    const comorbidities = await new ComorbiditiesPatient()
-      .where('patientId', ctx.params.id)
-      .fetchAll()
-
     const now = new Date()
     const to = new Date(now.setDate(now.getDate() + 1))
-
-    const nas = await new Nas()
-      .where('patientId', ctx.params.id)
-      .where('created_at', '>=', new Date().toLocaleDateString())
-      .where('created_at', '<=', to.toLocaleDateString())
-      .count()
-
-    return {
-      ...patient.attributes,
-      hospitalizationReason: reasons.map(
-        r => r.attributes.hospitalizationReasonId
-      ),
-      comorbidities: comorbidities.map(r => r.attributes.comorbiditiesId),
-      dailyNas: parseInt(nas) > 0
-    }
+    const patient = await new Patient({ id: ctx.params.id }).fetch({
+      withRelated: [
+        {
+          nas: query =>
+            query
+              .where('nas_date', '>=', new Date().toLocaleDateString())
+              .where('nas_date', '<=', to.toLocaleDateString())
+              .column('patient_id', 'id')
+        },
+        'hospitalization_reason',
+        'comorbidities'
+      ]
+    })
+    patient.attributes.daily_nas = !!patient.relations.nas.length
+    delete patient.relations.nas
+    return patient
   },
 
   create: async ctx => {
     const { body } = ctx.request
-    const { hospitalizationReason, comorbidities } = body
+    const { hospitalization_reason, comorbidities } = body
 
     const patient = await new Patient({
       name: body.name,
       birthday: body.birthday,
-      toSearch: body.name
+      to_search: body.name
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toUpperCase(),
       outcome: body.outcome,
-      saps3: body.saps3,
-      outcomeDate: body.outcomeDate,
-      hospitalizationDate: body.hospitalizationDate,
+      saps_3: body.saps_3,
+      outcome_date: body.outcome_date,
+      hospitalization_date: body.hospitalization_date,
       bed: body.bed
     }).save()
 
-    if (!hospitalizationReason && !comorbidities) {
-      return {
-        ...patient.attributes,
-        hospitalizationReason: [],
-        comorbidities: []
-      }
-    }
-
-    let reasonPatient, comorbiditiesPatient
-
-    if (hospitalizationReason) {
-      reasonPatient = hospitalizationReason.map(async r => {
-        const reason = await new HospitalizationReasonPatient({
-          patientId: patient.attributes.id,
-          hospitalizationReasonId: r
-        }).save()
-        return reason.attributes.hospitalizationReasonId
-      })
+    if (hospitalization_reason) {
+      const reasonsToAttach = hospitalization_reason.map(c => ({
+        hospitalization_reason_id: c,
+        patient_id: patient.attributes.id
+      }))
+      const reasons = await HospitalizationReasonPatient.collection()
+        .add(reasonsToAttach)
+        .invokeThen('save')
+      patient.attributes.hospitalization_reason = reasons.map(r => r.attributes)
     }
 
     if (comorbidities) {
-      comorbiditiesPatient = comorbidities.map(async r => {
-        const comorbidity = await new ComorbiditiesPatient({
-          patientId: patient.attributes.id,
-          comorbiditiesId: r
-        }).save()
-        return comorbidity.attributes.comorbiditiesId
-      })
-    }
+      const comorbiditiesToAttach = comorbidities.map(c => ({
+        comorbidity_id: c,
+        patient_id: patient.attributes.id
+      }))
 
-    return {
-      ...patient.attributes,
-      hospitalizationReason: reasonPatient
-        ? await Promise.all(reasonPatient)
-        : [],
-      comorbidities: comorbiditiesPatient
-        ? await Promise.all(comorbiditiesPatient)
-        : []
+      const cms = await ComorbiditiesPatient.collection()
+        .add(comorbiditiesToAttach)
+        .invokeThen('save')
+
+      patient.attributes.comorbidities = cms.map(r => r.attributes)
     }
+    return patient
   },
 
   update: async ctx => {
     const { body } = ctx.request
-    const reasons = body.hospitalizationReason
-    const comorbidities = body.comorbidities
+    const { hospitalization_reason, comorbidities } = body
 
     const patient = await new Patient({ id: ctx.params.id }).save(
       {
         name: body.name,
         birthday: body.birthday,
-        toSearch: body.name
+        to_search: body.name
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')
           .toUpperCase(),
         outcome: body.outcome,
-        saps3: body.saps3,
-        outcomeDate: body.outcomeDate,
-        hospitalizationDate: body.hospitalizationDate,
+        saps_3: body.saps_3,
+        outcome_date: body.outcome_date,
+        hospitalization_date: body.hospitalization_date,
         bed: body.bed
       },
       { method: 'update' }
     )
 
-    delete patient.attributes.toSearch
+    delete patient.attributes.to_search
 
-    const hr = await new HospitalizationReasonPatient()
-      .where('patientId', ctx.params.id)
-      .fetchAll()
+    await new HospitalizationReasonPatient()
+      .where('patient_id', ctx.params.id)
+      .destroy({ require: false })
+    await new ComorbiditiesPatient()
+      .where('patient_id', ctx.params.id)
+      .destroy({ require: false })
 
-    const cm = await new ComorbiditiesPatient()
-      .where('patientId', ctx.params.id)
-      .fetchAll()
-
-    let ret = {
-      ...patient.attributes
+    if (hospitalization_reason) {
+      const reasonsToAttach = hospitalization_reason.map(c => ({
+        hospitalization_reason_id: c,
+        patient_id: patient.attributes.id
+      }))
+      const reasons = await HospitalizationReasonPatient.collection()
+        .add(reasonsToAttach)
+        .invokeThen('save')
+      patient.attributes.hospitalization_reason = reasons.map(r => r.attributes)
     }
 
-    if (!reasons || !reasons.length) {
-      if (hr.length) {
-        await new HospitalizationReasonPatient()
-          .where('patientId', ctx.params.id)
-          .destroy()
-      }
-      ret.hospitalizationReason = []
+    if (comorbidities) {
+      const comorbiditiesToAttach = comorbidities.map(c => ({
+        comorbidity_id: c,
+        patient_id: patient.attributes.id
+      }))
+
+      const cms = await ComorbiditiesPatient.collection()
+        .add(comorbiditiesToAttach)
+        .invokeThen('save')
+
+      patient.attributes.comorbidities = cms.map(r => r.attributes)
     }
 
-    if (!comorbidities || !comorbidities.length) {
-      if (cm.length) {
-        await new ComorbiditiesPatient()
-          .where('patientId', ctx.params.id)
-          .destroy()
-      }
-      ret.comorbidities = []
-    }
-
-    if (
-      (!reasons || !reasons.length) &&
-      (!comorbidities || !comorbidities.length)
-    ) {
-      return ret
-    }
-
-    if (hr.length) {
-      const hrResolved = await Promise.all(hr)
-      const toBeDeleted = hrResolved.filter(reason => {
-        return !reasons.find(
-          r => r === reason.attributes.hospitalizationReasonId
-        )
-      })
-      toBeDeleted.map(reason =>
-        new HospitalizationReasonPatient({ id: reason.attributes.id }).destroy()
-      )
-    }
-
-    const reasonPatient = reasons.map(async r => {
-      const isExits = await new HospitalizationReasonPatient()
-        .where('patientId', ctx.params.id)
-        .where('hospitalizationReasonId', r)
-        .count()
-
-      if (parseInt(isExits)) {
-        return r
-      }
-
-      const reason = await new HospitalizationReasonPatient({
-        patientId: ctx.params.id,
-        hospitalizationReasonId: r
-      }).save()
-      return reason.attributes.hospitalizationReasonId
-    })
-
-    ret.hospitalizationReason = await Promise.all(reasonPatient)
-
-    if (cm.length) {
-      const cmResolved = await Promise.all(cm)
-      const toBeDeleted = cmResolved.filter(comorbidity => {
-        return !comorbidities.find(
-          r => r === comorbidity.attributes.comorbiditiesId
-        )
-      })
-      toBeDeleted.map(comorbidity =>
-        new ComorbiditiesPatient({ id: comorbidity.attributes.id }).destroy()
-      )
-    }
-
-    const comorboditiesPatient = comorbidities.map(async c => {
-      const isExits = await new ComorbiditiesPatient()
-        .where('patientId', ctx.params.id)
-        .where('comorbiditiesId', c)
-        .count()
-
-      if (parseInt(isExits)) {
-        return c
-      }
-
-      const comorbidity = await new ComorbiditiesPatient({
-        patientId: ctx.params.id,
-        comorbiditiesId: c
-      }).save()
-      return comorbidity.attributes.comorbiditiesId
-    })
-
-    ret.comorbidities = await Promise.all(comorboditiesPatient)
-
-    return ret
+    return patient
   },
 
   destroy: async ctx => {
     const idPatient = ctx.params.id
 
-    const hr = await new HospitalizationReasonPatient()
-      .where('patientId', idPatient)
-      .count()
+    new HospitalizationReasonPatient()
+      .where('patient_id', idPatient)
+      .destroy({ require: false })
 
-    const comorbiditiesPatient = await new ComorbiditiesPatient()
-      .where('patientId', idPatient)
-      .count()
+    new ComorbiditiesPatient()
+      .where('patient_id', idPatient)
+      .destroy({ require: false })
 
-    const nas = await new Nas().where('patientId', idPatient).count()
-
-    if (parseInt(hr)) {
-      new HospitalizationReasonPatient().where('patientId', idPatient).destroy()
-    }
-
-    if (parseInt(comorbiditiesPatient)) {
-      new ComorbiditiesPatient().where('patientId', idPatient).destroy()
-    }
-
-    if (parseInt(nas)) {
-      new Nas().where('patientId', idPatient).destroy()
-    }
+    new Nas().where('patient_id', idPatient).destroy({ require: false })
 
     return new Patient({ id: idPatient }).destroy()
   }

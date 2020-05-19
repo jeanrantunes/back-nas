@@ -6,84 +6,86 @@ const UsersValidate = {
   create: () =>
     validateSchema({
       body: {
-        patientId: Joi.string()
+        patient_id: Joi.string()
           .guid()
           .required(),
-        monitoringAndControls: Joi.string()
+        monitoring_and_controls: Joi.string()
           .valid('1a', '1b', '1c')
           .default('1a'),
-        laboratoryInvestigations: Joi.boolean().default(false),
-        medicationExceptVasoactiveDrugs: Joi.boolean().default(true),
-        hygieneProcedures: Joi.string()
+        laboratory_investigations: Joi.boolean().default(false),
+        medication_except_vasoactive_drugs: Joi.boolean().default(true),
+        hygiene_procedures: Joi.string()
           .valid('4a', '4b', '4c')
           .default('4a'),
-        caringForDrains: Joi.boolean().default(true),
-        mobilizationAndPositioning: Joi.string()
+        caring_for_drains: Joi.boolean().default(true),
+        mobilization_and_positioning: Joi.string()
           .valid('6a', '6b', '6c')
           .default('6b'),
-        supportAndCare: Joi.string()
+        support_and_care: Joi.string()
           .valid('7a', '7b')
           .default('7a'),
-        administrativeAndManagerialTasks: Joi.string()
+        administrative_and_managerial_tasks: Joi.string()
           .valid('8a', '8b', '8c')
           .default('8a'),
-        ventilatorySupport: Joi.boolean().default(false),
-        lungFunction: Joi.boolean().default(true),
-        artificialAirways: Joi.boolean().default(true),
-        vasoactiveDrugs: Joi.boolean().default(false),
-        intravenousReplacement: Joi.boolean().default(true),
-        monitoringOfTheLeftAtrium: Joi.boolean().default(true),
-        cardiorespiratoryResumption: Joi.boolean().default(false),
-        hemofiltrationTechniques: Joi.boolean().default(false),
-        urineOutput: Joi.boolean().default(false),
-        intracranialPressure: Joi.boolean().default(false),
-        acidosisTreatment: Joi.boolean().default(false),
-        intravenousHyperalimentation: Joi.boolean().default(false),
-        enteralFeeding: Joi.boolean().default(true),
-        specificInterventionsInTheUnit: Joi.boolean().default(false),
-        specificInterventionsOutsideTheUnit: Joi.boolean().default(false)
+        ventilatory_support: Joi.boolean().default(false),
+        lung_function: Joi.boolean().default(true),
+        artificial_airways: Joi.boolean().default(true),
+        vasoactive_drugs: Joi.boolean().default(false),
+        intravenous_replacement: Joi.boolean().default(true),
+        monitoring_of_the_left_atrium: Joi.boolean().default(true),
+        cardiorespiratory_resumption: Joi.boolean().default(false),
+        hemofiltration_techniques: Joi.boolean().default(false),
+        urine_output: Joi.boolean().default(false),
+        intracranial_pressure: Joi.boolean().default(false),
+        acidosis_treatment: Joi.boolean().default(false),
+        intravenous_hyperalimentation: Joi.boolean().default(false),
+        enteral_feeding: Joi.boolean().default(true),
+        specific_interventions_in_the_unit: Joi.boolean().default(false),
+        specific_interventions_outside_the_unit: Joi.boolean().default(false),
+        nas_date: Joi.date().max('now')
       }
     }),
 
   update: () =>
     validateSchema({
       body: {
-        patientId: Joi.string()
+        patient_id: Joi.string()
           .guid()
           .required(),
-        monitoringAndControls: Joi.string()
+        monitoring_and_controls: Joi.string()
           .valid('1a', '1b', '1c')
           .default('1a'),
-        laboratoryInvestigations: Joi.boolean().default(false),
-        medicationExceptVasoactiveDrugs: Joi.boolean().default(true),
-        hygieneProcedures: Joi.string()
+        laboratory_investigations: Joi.boolean().default(false),
+        medication_except_vasoactive_drugs: Joi.boolean().default(true),
+        hygiene_procedures: Joi.string()
           .valid('4a', '4b', '4c')
           .default('4a'),
-        caringForDrains: Joi.boolean().default(true),
-        mobilizationAndPositioning: Joi.string()
+        caring_for_drains: Joi.boolean().default(true),
+        mobilization_and_positioning: Joi.string()
           .valid('6a', '6b', '6c')
           .default('6b'),
-        supportAndCare: Joi.string()
+        support_and_care: Joi.string()
           .valid('7a', '7b')
           .default('7a'),
-        administrativeAndManagerialTasks: Joi.string()
+        administrative_and_managerial_tasks: Joi.string()
           .valid('8a', '8b', '8c')
           .default('8a'),
-        ventilatorySupport: Joi.boolean().default(false),
-        lungFunction: Joi.boolean().default(true),
-        artificialAirways: Joi.boolean().default(true),
-        vasoactiveDrugs: Joi.boolean().default(false),
-        intravenousReplacement: Joi.boolean().default(true),
-        monitoringOfTheLeftAtrium: Joi.boolean().default(true),
-        cardiorespiratoryResumption: Joi.boolean().default(false),
-        hemofiltrationTechniques: Joi.boolean().default(false),
-        urineOutput: Joi.boolean().default(false),
-        intracranialPressure: Joi.boolean().default(false),
-        acidosisTreatment: Joi.boolean().default(false),
-        intravenousHyperalimentation: Joi.boolean().default(false),
-        enteralFeeding: Joi.boolean().default(true),
-        specificInterventionsInTheUnit: Joi.boolean().default(false),
-        specificInterventionsOutsideTheUnit: Joi.boolean().default(false)
+        ventilatory_support: Joi.boolean().default(false),
+        lung_function: Joi.boolean().default(true),
+        artificial_airways: Joi.boolean().default(true),
+        vasoactive_drugs: Joi.boolean().default(false),
+        intravenous_replacement: Joi.boolean().default(true),
+        monitoring_of_the_left_atrium: Joi.boolean().default(true),
+        cardiorespiratory_resumption: Joi.boolean().default(false),
+        hemofiltration_techniques: Joi.boolean().default(false),
+        urine_output: Joi.boolean().default(false),
+        intracranial_pressure: Joi.boolean().default(false),
+        acidosis_treatment: Joi.boolean().default(false),
+        intravenous_hyperalimentation: Joi.boolean().default(false),
+        enteral_feeding: Joi.boolean().default(true),
+        specific_interventions_in_the_unit: Joi.boolean().default(false),
+        specific_interventions_outside_the_unit: Joi.boolean().default(false),
+        nas_date: Joi.date().max('now')
       }
     })
 }

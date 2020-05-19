@@ -29,57 +29,57 @@ export const seed = async knex => {
     {
       id: uidPatient1,
       name: namePatient1,
-      toSearch: 'SEU ZE',
-      hospitalizationDate: new Date(),
+      to_search: 'SEU ZE',
+      hospitalization_date: new Date(),
       birthday: new Date('06/07/1993'),
       bed: 'A'
     },
     {
       id: uidPatient2,
       name: namePatient2,
-      toSearch: 'DONA MARIA',
+      to_search: 'DONA MARIA',
       outcome: 'death',
-      hospitalizationDate: new Date('2020-03-07T14:55:00.000Z'),
+      hospitalization_date: new Date('2020-03-07T14:55:00.000Z'),
       bed: 'B'
     },
     {
       id: uidPatient7,
       name: 'Maria Luiza',
-      toSearch: 'MARIA LUIZA',
+      to_search: 'MARIA LUIZA',
       birthday: new Date('06/25/1763'),
-      hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
+      hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'B'
     },
     {
       id: uidPatient3,
       name: 'Seu Jorge',
-      toSearch: 'SEU JORGE',
+      to_search: 'SEU JORGE',
       birthday: new Date('06/25/1933'),
-      hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
+      hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'C'
     },
     {
       id: uidPatient4,
       name: 'José Luiz',
-      toSearch: 'JOSE LUIZ',
+      to_search: 'JOSE LUIZ',
       birthday: new Date('06/25/1936'),
-      hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
+      hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'D'
     },
     {
       id: uidPatient5,
       name: 'Neymar',
-      toSearch: 'NEYMAR',
+      to_search: 'NEYMAR',
       birthday: new Date('06/25/1963'),
-      hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
+      hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'E'
     },
     {
       id: uidPatient6,
       name: 'Seu Paulo',
-      toSearch: 'SEU PAULO',
+      to_search: 'SEU PAULO',
       birthday: new Date('06/25/1863'),
-      hospitalizationDate: new Date('2020-04-07T14:55:00.000Z'),
+      hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
       bed: 'F'
     }
   ])
@@ -89,63 +89,69 @@ export const seed = async knex => {
   const uidReason4 = uuidv4()
   const uidReason5 = uuidv4()
   const uidReason6 = uuidv4()
-  await knex('hospitalizationReason').insert([
+  await knex('hospitalization_reason').insert([
     {
       id: uidReason1,
-      name: 'Sepse'
+      name: 'Sepse',
+      to_search: 'SEPSE'
     },
     {
       id: uidReason2,
-      name: 'Cirrose'
+      name: 'Cirrose',
+      to_search: 'CIRROSE'
     },
     {
       id: uidReason3,
-      name: 'Linfoma Não Hodgkin'
+      name: 'Linfoma Não Hodgkin',
+      to_search: 'LINFOMA NAO HODGKIN'
     },
     {
       id: uidReason4,
-      name: 'Insuficiência respiratória'
+      name: 'Insuficiência respiratória',
+      to_search: 'INSUFICIENCIA RESPIRATORIA'
     },
     {
       id: uidReason5,
-      name: 'Infecção respiratória'
+      name: 'Infecção respiratória',
+      to_search: 'SEU PAULO'
     },
     {
       id: uidReason6,
-      name: 'Derrame Pleural'
+      name: 'Derrame Pleural',
+      to_search: 'DERRAME PLEURAL'
     }
   ])
 
-  await knex('hospitalizationReasonPatients').insert([
+  await knex('hospitalization_reason_patients').insert([
     {
-      id: uuidv4(),
-      patientId: uidPatient1,
-      hospitalizationReasonId: uidReason1
+      // id: uuidv4(),
+      patient_id: uidPatient1,
+      hospitalization_reason_id: uidReason1
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient2,
-      hospitalizationReasonId: uidReason1
+      // id: uuidv4(),
+      patient_id: uidPatient2,
+      hospitalization_reason_id: uidReason1
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient2,
-      hospitalizationReasonId: uidReason2
+      // id: uuidv4(),
+      patient_id: uidPatient2,
+      hospitalization_reason_id: uidReason2
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient2,
-      hospitalizationReasonId: uidReason5
+      // id: uuidv4(),
+      patient_id: uidPatient2,
+      hospitalization_reason_id: uidReason5
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient2,
-      hospitalizationReasonId: uidReason6
+      // id: uuidv4(),
+      patient_id: uidPatient2,
+      hospitalization_reason_id: uidReason6
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient1,
-      hospitalizationReasonId: uidReason2
+      // id: uuidv4(),
+      patient_id: uidPatient1,
+      hospitalization_reason_id: uidReason2
     }
   ])
   const uidComorbidities1 = uuidv4()
@@ -157,119 +163,127 @@ export const seed = async knex => {
   await knex('comorbidities').insert([
     {
       id: uidComorbidities1,
-      name: 'Neoplasia pulmonar'
+      name: 'Neoplasia pulmonar',
+      to_search: 'NEOPLASIA PULMONAR'
     },
     {
       id: uidComorbidities2,
-      name: 'Tabagismo'
+      name: 'Tabagismo',
+      to_search: 'TABAGISMO'
     },
     {
       id: uidComorbidities3,
-      name: 'Linfoma'
+      name: 'Linfoma',
+      to_search: 'LINFOMA'
     },
     {
       id: uidComorbidities4,
-      name: 'HAS'
+      name: 'HAS',
+      to_search: 'HAS'
     },
     {
       id: uidComorbidities5,
-      name: 'Bicitopenia'
+      name: 'Bicitopenia',
+      to_search: 'BICITOPENIA'
     },
     {
       id: uidComorbidities6,
-      name: 'ICC'
+      name: 'ICC',
+      to_search: 'ICC'
     }
   ])
 
-  await knex('comorbiditiesPatients').insert([
+  await knex('comorbidities_patients').insert([
     {
-      id: uuidv4(),
-      patientId: uidPatient1,
-      comorbiditiesId: uidComorbidities3
+      // id: uuidv4(),
+      patient_id: uidPatient1,
+      comorbidity_id: uidComorbidities3
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient2,
-      comorbiditiesId: uidComorbidities3
+      // id: uuidv4(),
+      patient_id: uidPatient2,
+      comorbidity_id: uidComorbidities3
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient2,
-      comorbiditiesId: uidComorbidities6
+      // id: uuidv4(),
+      patient_id: uidPatient2,
+      comorbidity_id: uidComorbidities6
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient2,
-      comorbiditiesId: uidComorbidities4
+      // id: uuidv4(),
+      patient_id: uidPatient2,
+      comorbidity_id: uidComorbidities4
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient2,
-      comorbiditiesId: uidComorbidities5
+      // id: uuidv4(),
+      patient_id: uidPatient2,
+      comorbidity_id: uidComorbidities5
     },
     {
-      id: uuidv4(),
-      patientId: uidPatient1,
-      comorbiditiesId: uidComorbidities6
+      // id: uuidv4(),
+      patient_id: uidPatient1,
+      comorbidity_id: uidComorbidities6
     }
   ])
 
   await knex('nas').insert([
     {
       // id: uuidv4(),
-      patientId: uidPatient1,
-      monitoringAndControls: '1a',
-      laboratoryInvestigations: false,
-      medicationExceptVasoactiveDrugs: true,
-      hygieneProcedures: '4a',
-      caringForDrains: true,
-      mobilizationAndPositioning: '6a',
-      supportAndCare: '7a',
-      administrativeAndManagerialTasks: '8a',
-      ventilatorySupport: false,
-      lungFunction: false,
-      artificialAirways: true,
-      vasoactiveDrugs: false,
-      intravenousReplacement: false,
-      monitoringOfTheLeftAtrium: false,
-      cardiorespiratoryResumption: false,
-      hemofiltrationTechniques: false,
-      urineOutput: false,
-      intracranialPressure: false,
-      acidosisTreatment: false,
-      intravenousHyperalimentation: false,
-      enteralFeeding: false,
-      specificInterventionsInTheUnit: false,
-      specificInterventionsOutsideTheUnit: true,
+      patient_id: uidPatient1,
+      monitoring_and_controls: '1a',
+      laboratory_investigations: false,
+      medication_except_vasoactive_drugs: true,
+      hygiene_procedures: '4a',
+      caring_for_drains: true,
+      mobilization_and_positioning: '6a',
+      support_and_care: '7a',
+      administrative_and_managerial_tasks: '8a',
+      ventilatory_support: false,
+      lung_function: false,
+      artificial_airways: true,
+      vasoactive_drugs: false,
+      intravenous_replacement: false,
+      monitoring_of_the_left_atrium: false,
+      cardiorespiratory_resumption: false,
+      hemofiltration_techniques: false,
+      urine_output: false,
+      intracranial_pressure: false,
+      acidosis_treatment: false,
+      intravenous_hyperalimentation: false,
+      enteral_feeding: false,
+      specific_interventions_in_the_unit: false,
+      specific_interventions_outside_the_unit: true,
+      nas_date: new Date(),
       created_at: new Date(),
       updated_at: new Date()
     },
     {
       // id: uuidv4(),
-      patientId: uidPatient2,
-      monitoringAndControls: '1a',
-      laboratoryInvestigations: false,
-      medicationExceptVasoactiveDrugs: true,
-      hygieneProcedures: '4a',
-      caringForDrains: true,
-      mobilizationAndPositioning: '6b',
-      supportAndCare: '7a',
-      administrativeAndManagerialTasks: '8b',
-      ventilatorySupport: false,
-      lungFunction: true,
-      artificialAirways: false,
-      vasoactiveDrugs: false,
-      intravenousReplacement: true,
-      monitoringOfTheLeftAtrium: true,
-      cardiorespiratoryResumption: false,
-      hemofiltrationTechniques: false,
-      urineOutput: false,
-      intracranialPressure: false,
-      acidosisTreatment: false,
-      intravenousHyperalimentation: false,
-      enteralFeeding: true,
-      specificInterventionsInTheUnit: false,
-      specificInterventionsOutsideTheUnit: false,
+      patient_id: uidPatient2,
+      monitoring_and_controls: '1a',
+      laboratory_investigations: false,
+      medication_except_vasoactive_drugs: true,
+      hygiene_procedures: '4a',
+      caring_for_drains: true,
+      mobilization_and_positioning: '6b',
+      support_and_care: '7a',
+      administrative_and_managerial_tasks: '8b',
+      ventilatory_support: false,
+      lung_function: true,
+      artificial_airways: false,
+      vasoactive_drugs: false,
+      intravenous_replacement: true,
+      monitoring_of_the_left_atrium: true,
+      cardiorespiratory_resumption: false,
+      hemofiltration_techniques: false,
+      urine_output: false,
+      intracranial_pressure: false,
+      acidosis_treatment: false,
+      intravenous_hyperalimentation: false,
+      enteral_feeding: true,
+      specific_interventions_in_the_unit: false,
+      specific_interventions_outside_the_unit: false,
+      nas_date: new Date(),
       created_at: new Date(),
       updated_at: new Date()
     }

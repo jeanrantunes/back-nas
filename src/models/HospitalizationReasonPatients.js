@@ -1,11 +1,11 @@
 import bookshelf, { Model } from 'models'
-import HospitalizationReason from './hospitalizationReason'
 import Patients from './Patients'
+import HospitalizationReason from './hospitalizationReason'
 
 const hospitalizationReasonPatients = Model({
-  tableName: 'hospitalizationReasonPatients',
-  uuid: true,
-  hospitalizationReason: function() {
+  tableName: 'hospitalization_reason_patients',
+  // uuid: true,
+  hospitalization_reason: function() {
     return this.belongsTo(HospitalizationReason)
   },
   patients: function() {

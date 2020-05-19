@@ -9,6 +9,15 @@ router.get('/users', UserController.index)
 
 router.post('/users/signup', UserValidate.create(), UserController.create)
 router.post('/users/login', UserController.login)
+
+router.get('/users/signup-confirm', UserController.userByTokenConfirm)
+
+router.put(
+  '/users/signup-confirm',
+  UserValidate.update(),
+  UserController.update
+)
+
 router.post('/users/password', UserController.generateKey)
 
 router.get('/users/password', UserController.userByToken)

@@ -7,12 +7,9 @@ const UsersValidate = {
     validateSchema({
       body: {
         name: Joi.string().required(),
+        inviting: Joi.string(),
         email: Joi.string()
           .email()
-          .required(),
-        password: Joi.string()
-          .min(1)
-          .max(100)
           .required(),
         role: Joi.string()
           .valid('ADMIN', 'USER')

@@ -18,14 +18,19 @@ export const production = {
 }
 
 export const test = {
-  client: 'sqlite3',
-  connection: {
-    filename: path.resolve(__dirname, 'db_test.sqlite3')
-  },
+  // client: 'sqlite3',
+  // connection: {
+  //   filename: path.resolve(__dirname, 'db_test.sqlite3')
+  // },
+  // migrations: {
+  //   directory: path.resolve(__dirname, 'migrations')
+  // },
+  // useNullAsDefault: true
+  client: 'pg',
+  connection: DATABASE,
   migrations: {
     directory: path.resolve(__dirname, 'migrations')
-  },
-  useNullAsDefault: true
+  }
 }
 
 const knex = {
