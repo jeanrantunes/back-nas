@@ -25,7 +25,7 @@
     "eslint": "eslint --ignore-path .gitignore .",
     "prettier": "prettier --write *.js src/*.js src/**/*.js src/**/**/*.js test/*.js test/**/*.js",
     "commit": "git-cz",
-    "heroku-postbuild": "echo Skip build on Heroku"
+    "heroku-postbuild": "npm run build"
   },
   "author": "naveteam",
   "license": "ISC",
