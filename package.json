@@ -24,7 +24,8 @@
     "db:rollback": "yarn knex migrate:rollback",
     "eslint": "eslint --ignore-path .gitignore .",
     "prettier": "prettier --write *.js src/*.js src/**/*.js src/**/**/*.js test/*.js test/**/*.js",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "heroku-postbuild": "echo Skip build on Heroku"
   },
   "author": "naveteam",
   "license": "ISC",
@@ -90,5 +91,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "heroku-run-build-script": true
 }
