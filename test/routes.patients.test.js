@@ -67,7 +67,6 @@ describe('TEST PATIENTS', () => {
       const response = await request(global.server)
         .get('/v1/patients')
         .set('Authorization', global.user.token)
-      console.log(response.body)
       expect(response.status).toEqual(200)
       expect(response.type).toEqual('application/json')
       expect(Object.keys(response.body.data[0])).toEqual(

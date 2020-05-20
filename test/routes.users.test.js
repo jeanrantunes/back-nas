@@ -26,7 +26,6 @@ describe('TEST USERS', () => {
           email: 'jeanrantunes153@gmail.com',
           role: 'ADMIN'
         })
-      console.log(response.body)
       expect(response.status).toEqual(200)
       expect(response.type).toEqual('application/json')
       expect(Object.keys(response.body)).toEqual(
