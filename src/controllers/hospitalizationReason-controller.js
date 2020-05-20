@@ -1,5 +1,5 @@
-import HospitalizationReasonPatient from 'models/HospitalizationReasonPatients'
-import HospitalizationReason from 'models/HospitalizationReason'
+import HospitalizationReasonPatient from 'models/Hospitalization-reason-patients'
+import HospitalizationReason from 'models/Hospitalization-reason'
 
 const HospitalizationReasonController = {
   index: async ctx => {

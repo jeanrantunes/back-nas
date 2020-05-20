@@ -1,9 +1,6 @@
-import knex from 'knex'
 import Patient from 'models/Patients'
-import HospitalizationReasonPatient from 'models/HospitalizationReasonPatients'
-import ComorbiditiesPatient from 'models/ComorbiditiesPatients'
-import Comorbidities from 'models/Comorbidities'
-import HospitalizationReason from 'models/hospitalizationReason'
+import HospitalizationReasonPatient from 'models/Hospitalization-reason-patients'
+import ComorbiditiesPatient from 'models/Comorbidities-patients'
 import Nas from 'models/Nas'
 import { plusOneDay } from '../helpers/date'
 

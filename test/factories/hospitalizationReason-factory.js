@@ -1,4 +1,4 @@
-import HospitalizationReason from 'models/HospitalizationReason'
+import HospitalizationReason from 'models/Hospitalization-reason'
 import { stringGenerator } from 'helpers'
 
 const hospitalizationReasonFactory = async () => {

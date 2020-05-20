@@ -1,6 +1,6 @@
 import bookshelf, { Model } from 'models'
 import Comorbidities from './Comorbidities'
-import HospitalizationReason from './HospitalizationReason'
+import HospitalizationReason from './Hospitalization-reason'
 import Nas from './Nas'
 
 const patient = Model({

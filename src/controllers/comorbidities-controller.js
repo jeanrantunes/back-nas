@@ -1,4 +1,4 @@
-import ComorbiditiesPatient from 'models/ComorbiditiesPatients'
+import ComorbiditiesPatient from 'models/Comorbidities-patients'
 import Comorbidities from 'models/Comorbidities'
 
 const ComorbiditiesController = {
