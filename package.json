@@ -8,7 +8,7 @@
     "url": "https://github.com/naveteam/back-boilerplate.git"
   },
   "engines": {
-    "node": ">=10.14.0"
+    "node": "12.16.x"
   },
   "scripts": {
     "dev": "nodemon src/index.js --exec babel-node src/index.js",

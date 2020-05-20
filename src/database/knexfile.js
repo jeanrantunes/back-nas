@@ -27,7 +27,8 @@ export const test = {
   // },
   // useNullAsDefault: true
   client: 'pg',
-  connection: DATABASE,
+  // connection: DATABASE,
+  connection: 'postgres://jeanrantunes@localhost:5432/nas',
   migrations: {
     directory: path.resolve(__dirname, 'migrations')
   }
