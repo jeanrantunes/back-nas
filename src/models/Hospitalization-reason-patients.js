@@ -1,6 +1,6 @@
 import bookshelf, { Model } from 'models'
 import Patients from './Patients'
-import HospitalizationReason from './hospitalizationReason'
+import HospitalizationReason from './Hospitalization-reason'
 
 const hospitalizationReasonPatients = Model({
   tableName: 'hospitalization_reason_patients',
