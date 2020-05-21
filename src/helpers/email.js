@@ -8,21 +8,21 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-export const emailToRecoverPassword = async (email, token) => {
+export const emailToRecoverPassword = async (name, email, token) => {
   try {
     return await transporter.sendMail({
       from: process.env.SENDER,
       to: email,
       subject: 'Recuperação de senha NAS',
-      html: `<h3>Pelo visto você esqueceu sua senha</h3>
-                    Clique no link para trocar sua senha <a href="${process.env.HOST}/signup-confirm?passwordToken=${token}">${process.env.HOST}/signup-confirm?passwordToken=${token}</a></p>`
+      html: `<p>Olá <b>${name}</b>, pelo visto você esqueceu sua senha.</p>
+      <p>Clique no link para cadastrar uma nova senha sua senha <a href="${process.env.HOST}/signup-confirm?password_token=${token}">${process.env.HOST}/signup-confirm?password_token=${token}</a></p>`
     })
   } catch (err) {
     return err
   }
 }
 
-export const welcomeEmail = async (email, inviting, token) => {
+export const welcomeEmail = async (name, email, inviting, token) => {
   if (!email || !token || !inviting) {
     return
   }
@@ -32,8 +32,8 @@ export const welcomeEmail = async (email, inviting, token) => {
       to: email,
       subject: 'Bem vindo ao NAS',
       html: `<h3>Bem vindo</h3>
-            <p>Você recebeu um convite de ${inviting} para participar no NAS.</p>
-            <p>Clique aqui para aceitar o convite e finalizar seu cadastro <a href="${process.env.HOST}/signup-confirm?token=${token}">${process.env.HOST}/signup-confirm?token=${token}</a></p>`
+            <p>Olá <b>${name}</b>, você recebeu um convite de ${inviting} para participar no NAS.</p>
+            <p>Clique no link para aceitar o convite e finalizar seu cadastro <a href="${process.env.HOST}/signup-confirm?token=${token}">${process.env.HOST}/signup-confirm?token=${token}</a></p>`
     })
   } catch (err) {
     return err

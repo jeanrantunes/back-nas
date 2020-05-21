@@ -50,7 +50,7 @@ const UsersController = {
       signup_token: token
     }).save()
 
-    welcomeEmail(user.attributes.email, inviting, token)
+    welcomeEmail(name, email, inviting, token)
 
     return user
   },
@@ -63,6 +63,7 @@ const UsersController = {
         name: body.name,
         email: body.email,
         password: await encryptPassword(body.password),
+        reset_password_token: null,
         role: body.role,
         signup_token: null
       },
@@ -107,21 +108,25 @@ const UsersController = {
     const { body } = ctx.request
     const token = await bcrypt.hash(Math.random().toString(36), 10)
 
-    await new User()
+    const user = await new User()
       .where({ email: body.email })
       .save(
         {
-          resetPasswordToken: token,
-          // resetPasswordExpires: Date.now() + 360000
-          resetPasswordExpires: Date.now() + 360000000
+          reset_password_token: token,
+          reset_password_expires: Date.now() + 360000
         },
         { method: 'update' }
       )
-      .catch(() => {
+      .catch(err => {
+        console.log(err)
         throw Unauthorized('Unauthorized, User not found')
       })
-    // const parsedUser = user.toJSON()
-    const email = await emailToRecoverPassword(body.email, token).catch(err => {
+    const parsedUser = user.toJSON()
+    const email = await emailToRecoverPassword(
+      parsedUser.name,
+      body.email,
+      token
+    ).catch(err => {
       throw new BadRequest(err.toString())
     })
 
@@ -131,9 +136,9 @@ const UsersController = {
   userByToken: async ctx => {
     const user = await new User()
       .where({
-        resetPasswordToken: ctx.query.token
+        reset_password_token: ctx.query.token
       })
-      .where('resetPasswordExpires', '>', Date.now())
+      .where('reset_password_expires', '>', Date.now())
       .fetch()
 
     const parsedUser = user.toJSON()
