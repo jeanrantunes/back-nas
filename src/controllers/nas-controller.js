@@ -9,7 +9,7 @@ const NasController = {
       order_by,
       order_type,
       name,
-      patientId,
+      patient_id,
       id,
       created_start_date,
       created_end_date
@@ -59,8 +59,8 @@ const NasController = {
           qb.where('patient_id', 'in', patientsIds)
         }
 
-        if (patientId) {
-          qb.where('patient_id', patientId)
+        if (patient_id) {
+          qb.where('patient_id', patient_id)
         }
 
         if (created_start_date && created_end_date) {
@@ -120,8 +120,8 @@ const NasController = {
             qb.where('patient_id', 'in', patientsIds)
           }
 
-          if (patientId) {
-            qb.where('patient_id', patientId)
+          if (patient_id) {
+            qb.where('patient_id', patient_id)
           }
 
           if (created_start_date && created_end_date) {

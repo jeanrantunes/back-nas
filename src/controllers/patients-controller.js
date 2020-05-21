@@ -12,7 +12,7 @@ const PatientsController = {
       bed,
       comorbidities,
       hospitalization_reason,
-      daily_nas
+      latest_nas
     } = ctx.query
 
     let {
@@ -112,26 +112,12 @@ const PatientsController = {
       })
       .fetchAll({
         withRelated: [
-          daily_nas && {
-            nas: query => {
-              const now = new Date()
-              const to = new Date(now.setDate(now.getDate() + 1))
-              return query
-                .where('nas_date', '>=', new Date().toLocaleDateString())
-                .where('nas_date', '<=', to.toLocaleDateString())
-                .column('patient_id', 'id')
-            }
+          latest_nas && {
+            nas: query => query.orderBy('nas_date', 'DESC').limit(1)
           },
           hospitalization_reason && 'hospitalization_reason',
           comorbidities && 'comorbidities'
         ]
-      })
-      .map(patient => {
-        if (patient.relations.nas && patient.relations.nas.length) {
-          patient.attributes.daily_nas = true
-        }
-        delete patient.relations.nas
-        return patient
       })
 
     const total = parseInt(
@@ -181,7 +167,6 @@ const PatientsController = {
       ]
     })
     patient.attributes.daily_nas = !!patient.relations.nas.length
-    delete patient.relations.nas
     return patient
   },
 
