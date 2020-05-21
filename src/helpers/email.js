@@ -15,7 +15,7 @@ export const emailToRecoverPassword = async (name, email, token) => {
       to: email,
       subject: 'Recuperação de senha NAS',
       html: `<p>Olá <b>${name}</b>, pelo visto você esqueceu sua senha.</p>
-      <p>Clique no link para cadastrar uma nova senha sua senha <a href="${process.env.HOST}/signup-confirm?password_token=${token}">${process.env.HOST}/signup-confirm?password_token=${token}</a></p>`
+      <p>Clique no link para cadastrar uma nova senha <a href="${process.env.HOST}/signup-confirm?password_token=${token}">${process.env.HOST}/signup-confirm?password_token=${token}</a></p>`
     })
   } catch (err) {
     return err
