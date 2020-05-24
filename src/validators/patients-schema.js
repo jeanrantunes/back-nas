@@ -10,7 +10,17 @@ const UsersValidate = {
         birthday: Joi.date().max('now'),
         outcome: Joi.string()
           .valid('pending', 'death', 'discharge')
-          .default('pending'),
+          .required(),
+        origin: Joi.string()
+          .valid(
+            'ps',
+            'nursery',
+            'surgical-ward',
+            'other-institution',
+            'uti-covid',
+            'home'
+          )
+          .required(),
         comorbidities: Joi.array().items(Joi.string()),
         saps_3: Joi.number()
           .integer()
@@ -32,6 +42,16 @@ const UsersValidate = {
         outcome: Joi.string()
           .valid('pending', 'death', 'discharge')
           .default('pending'),
+        origin: Joi.string()
+          .valid(
+            'ps',
+            'nursery',
+            'surgical-ward',
+            'other-institution',
+            'uti-covid',
+            'home'
+          )
+          .required(),
         comorbidities: Joi.array().items(Joi.string()),
         saps_3: Joi.number()
           .integer()

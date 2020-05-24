@@ -62,7 +62,6 @@ const NasController = {
         if (patient_id) {
           qb.where('patient_id', patient_id)
         }
-
         if (created_start_date && created_end_date) {
           if (created_start_date === created_end_date) {
             qb.where('nas_date', '>=', new Date(created_start_date))

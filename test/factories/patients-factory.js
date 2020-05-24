@@ -8,6 +8,7 @@ const patientsFactory = async () => {
     name: name,
     birthday: dateGenerator(),
     outcome: ramdomArray(['pending', 'death', 'discharge']),
+    origin: 'ps',
     saps_3: Math.floor(Math.random() * (1000 - 0) + 0),
     outcome_date: dateGenerator(new Date(2020, 0, 1), new Date()),
     hospitalization_date: dateGenerator(),

@@ -12,7 +12,8 @@ const PatientsController = {
       bed,
       comorbidities,
       hospitalization_reason,
-      latest_nas
+      latest_nas,
+      origin
     } = ctx.query
 
     let {
@@ -52,6 +53,9 @@ const PatientsController = {
       }
       if (outcome) {
         qb.where('outcome', outcome)
+      }
+      if (origin) {
+        qb.where('origin', origin)
       }
       if (hospitalization_start_date && hospitalization_end_date) {
         qb.where(
@@ -113,11 +117,25 @@ const PatientsController = {
       .fetchAll({
         withRelated: [
           latest_nas && {
-            nas: query => query.orderBy('nas_date', 'DESC').limit(1)
+            nas: query =>
+              query.orderBy('nas_date', 'DESC').limit(items_per_page)
           },
           hospitalization_reason && 'hospitalization_reason',
           comorbidities && 'comorbidities'
         ]
+      })
+      .map(patient => {
+        if (!latest_nas) {
+          return patient
+        }
+        const nas = patient.relations.nas
+        if (nas.length) {
+          patient.attributes.latest_nas = nas.models[0].attributes
+          delete patient.relations.nas
+          return patient
+        }
+        delete patient.relations.nas
+        return patient
       })
 
     const total = parseInt(
@@ -177,6 +195,7 @@ const PatientsController = {
     const patient = await new Patient({
       name: body.name,
       birthday: body.birthday,
+      origin: body.origin,
       to_search: body.name
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
@@ -222,6 +241,7 @@ const PatientsController = {
       {
         name: body.name,
         birthday: body.birthday,
+        origin: body.origin,
         to_search: body.name
           .normalize('NFD')
           .replace(/[\u0300-\u036f]/g, '')

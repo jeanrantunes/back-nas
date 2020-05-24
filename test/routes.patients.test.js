@@ -51,6 +51,7 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
           'saps_3',
           'comorbidities',
           'hospitalization_reason',
@@ -75,6 +76,7 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
           'saps_3',
           'outcome_date',
           'hospitalization_date',
@@ -97,6 +99,8 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
+
           'saps_3',
           'comorbidities',
           'hospitalization_reason',
@@ -121,6 +125,8 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
+
           'saps_3',
           'outcome_date',
           'hospitalization_date',
@@ -143,6 +149,8 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
+
           'saps_3',
           'outcome_date',
           'hospitalization_date',
@@ -165,6 +173,8 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
+
           'saps_3',
           'outcome_date',
           'hospitalization_date',
@@ -193,6 +203,8 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
+
           'saps_3',
           'outcome_date',
           'hospitalization_date',
@@ -222,6 +234,8 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
+
           'saps_3',
           'outcome_date',
           'hospitalization_date',
@@ -267,6 +281,8 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
+
           'saps_3',
           'outcome_date',
           'hospitalization_date',
@@ -306,6 +322,8 @@ describe('TEST PATIENTS', () => {
           'name',
           'birthday',
           'outcome',
+          'origin',
+
           'saps_3',
           'comorbidities',
           'hospitalization_reason',

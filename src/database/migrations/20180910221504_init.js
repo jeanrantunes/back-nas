@@ -27,6 +27,14 @@ export const up = knex =>
       table.string('name').notNullable()
       table.datetime('birthday')
       table.string('to_search')
+      table.enu('origin', [
+        'ps',
+        'nursery',
+        'surgical-ward',
+        'other-institution',
+        'uti-covid',
+        'home'
+      ])
       table
         .enu('outcome', ['pending', 'death', 'discharge'])
         .defaultTo('pending')
