@@ -27,7 +27,6 @@ describe('TEST PATIENTS', () => {
       const comorbidity3 = await ComorbidityFactory()
       const hr1 = await HospitalizationReasonFactory()
       const hr2 = await HospitalizationReasonFactory()
-
       const response = await request(global.server)
         .post('/v1/patients')
         .set('Authorization', global.user.token)
@@ -35,6 +34,7 @@ describe('TEST PATIENTS', () => {
           name: 'Some Comorbidity',
           birthday: new Date(1969, 0, 1),
           outcome: 'death',
+          origin: 'ps',
           saps_3: 100,
           comorbidities: [comorbidity1.id, comorbidity2.id, comorbidity3.id],
           hospitalization_reason: [hr1.id, hr2.id],
@@ -42,7 +42,7 @@ describe('TEST PATIENTS', () => {
           hospitalization_date: new Date(2020, 0, 2),
           bed: 'A'
         })
-
+      console.log(response.body)
       expect(response.status).toEqual(200)
       expect(response.type).toEqual('application/json')
       expect(Object.keys(response.body)).toEqual(
@@ -306,6 +306,7 @@ describe('TEST PATIENTS', () => {
         .send({
           name: 'Some patient update',
           birthday: new Date(1969, 0, 1),
+          origin: 'ps',
           outcome: 'discharge',
           saps_3: 310,
           comorbidities: [comorbidity1.id, comorbidity2.id],
