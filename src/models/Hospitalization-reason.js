@@ -2,7 +2,7 @@ import bookshelf, { Model } from 'models'
 import Patients from './Patients'
 
 const hospitalizationReason = Model({
-  tableName: 'hospitalization_reason',
+  tableName: 'hr',
   uuid: true,
   patients: function() {
     return this.belongsToMany(Patients)

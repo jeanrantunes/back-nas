@@ -83,7 +83,7 @@ const HospitalizationReasonController = {
     const id = ctx.params.id
 
     new HospitalizationReasonPatient()
-      .where('hospitalization_reason_id', id)
+      .where('hr_id', id)
       .destroy({ require: false })
 
     return new HospitalizationReason({ id }).destroy()

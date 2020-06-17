@@ -9,7 +9,7 @@ const patient = Model({
   comorbidities: function() {
     return this.belongsToMany(Comorbidities)
   },
-  hospitalization_reason: function() {
+  hr: function() {
     return this.belongsToMany(HospitalizationReason)
   },
   nas: function() {

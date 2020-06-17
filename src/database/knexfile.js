@@ -1,8 +1,8 @@
 import path from 'path'
 import { DATABASE } from '../config'
-
+console.log(process.env.NODE_ENV)
 export const development = {
-  client: 'pg',
+  client: 'mysql',
   connection: DATABASE,
   migrations: {
     directory: path.resolve(__dirname, 'migrations')
@@ -10,8 +10,15 @@ export const development = {
 }
 
 export const production = {
-  client: 'pg',
+  client: 'mysql',
   connection: DATABASE,
+  // connection: {
+  //   host: 'mysql669.umbler.com',
+  //   port: 41890,
+  //   database: 'nas-db',
+  //   user: 'jeanrantunes',
+  //   password: 'Fohu0059'
+  // },
   migrations: {
     directory: path.resolve(__dirname, 'migrations')
   }

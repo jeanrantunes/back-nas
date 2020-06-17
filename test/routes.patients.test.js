@@ -37,7 +37,7 @@ describe('TEST PATIENTS', () => {
           origin: 'ps',
           saps_3: 100,
           comorbidities: [comorbidity1.id, comorbidity2.id, comorbidity3.id],
-          hospitalization_reason: [hr1.id, hr2.id],
+          hr: [hr1.id, hr2.id],
           outcome_date: new Date(2020, 0, 1),
           hospitalization_date: new Date(2020, 0, 2),
           bed: 'A'
@@ -54,7 +54,7 @@ describe('TEST PATIENTS', () => {
           'origin',
           'saps_3',
           'comorbidities',
-          'hospitalization_reason',
+          'hr',
           'outcome_date',
           'hospitalization_date',
           'bed'
@@ -86,10 +86,10 @@ describe('TEST PATIENTS', () => {
     })
   })
 
-  describe('GET /v1/patients?comorbidities=true&hospitalization_reason=true', () => {
+  describe('GET /v1/patients?comorbidities=true&hr=true', () => {
     test('should return a list of patients with comorbidities and hospitalization reasons', async () => {
       const response = await request(global.server)
-        .get('/v1/patients?comorbidities=true&hospitalization_reason=true')
+        .get('/v1/patients?comorbidities=true&hr=true')
         .set('Authorization', global.user.token)
       expect(response.status).toEqual(200)
       expect(response.type).toEqual('application/json')
@@ -103,7 +103,7 @@ describe('TEST PATIENTS', () => {
 
           'saps_3',
           'comorbidities',
-          'hospitalization_reason',
+          'hr',
           'outcome_date',
           'hospitalization_date',
           'bed'
@@ -288,7 +288,7 @@ describe('TEST PATIENTS', () => {
           'hospitalization_date',
           'bed',
           'comorbidities',
-          'hospitalization_reason',
+          'hr',
           'daily_nas'
         ])
       )
@@ -310,7 +310,7 @@ describe('TEST PATIENTS', () => {
           outcome: 'discharge',
           saps_3: 310,
           comorbidities: [comorbidity1.id, comorbidity2.id],
-          hospitalization_reason: [hr1.id],
+          hr: [hr1.id],
           outcome_date: new Date(2019, 0, 1),
           hospitalization_date: new Date(2010, 0, 2),
           bed: 'C'
@@ -327,7 +327,7 @@ describe('TEST PATIENTS', () => {
 
           'saps_3',
           'comorbidities',
-          'hospitalization_reason',
+          'hr',
           'outcome_date',
           'hospitalization_date',
           'bed'

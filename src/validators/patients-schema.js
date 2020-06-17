@@ -27,7 +27,7 @@ const UsersValidate = {
           .default(0),
         outcome_date: Joi.date().max('now'),
         hospitalization_date: Joi.date().max('now'),
-        hospitalization_reason: Joi.array().items(Joi.string()),
+        hr: Joi.array().items(Joi.string()),
         bed: Joi.string()
           .valid('A', 'B', 'C', 'D', 'E', 'F')
           .required()
@@ -58,7 +58,7 @@ const UsersValidate = {
           .default(0),
         outcome_date: Joi.date().max('now'),
         hospitalization_date: Joi.date().max('now'),
-        hospitalization_reason: Joi.array().items(Joi.string()),
+        hr: Joi.array().items(Joi.string()),
         bed: Joi.string()
           .valid('A', 'B', 'C', 'D', 'E', 'F')
           .required()

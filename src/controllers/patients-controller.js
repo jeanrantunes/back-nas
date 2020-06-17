@@ -11,7 +11,7 @@ const PatientsController = {
       outcome,
       bed,
       comorbidities,
-      hospitalization_reason,
+      hr,
       latest_nas,
       origin
     } = ctx.query
@@ -120,7 +120,7 @@ const PatientsController = {
             nas: query =>
               query.orderBy('nas_date', 'DESC').limit(items_per_page)
           },
-          hospitalization_reason && 'hospitalization_reason',
+          hr && 'hr',
           comorbidities && 'comorbidities'
         ]
       })
@@ -180,7 +180,7 @@ const PatientsController = {
               .where('nas_date', '<=', to.toLocaleDateString())
               .column('patient_id', 'id')
         },
-        'hospitalization_reason',
+        'hr',
         'comorbidities'
       ]
     })
@@ -190,7 +190,7 @@ const PatientsController = {
 
   create: async ctx => {
     const { body } = ctx.request
-    const { hospitalization_reason, comorbidities } = body
+    const { hr, comorbidities } = body
 
     const patient = await new Patient({
       name: body.name,
@@ -207,15 +207,15 @@ const PatientsController = {
       bed: body.bed
     }).save()
 
-    if (hospitalization_reason) {
-      const reasonsToAttach = hospitalization_reason.map(c => ({
-        hospitalization_reason_id: c,
+    if (hr) {
+      const reasonsToAttach = hr.map(c => ({
+        hr_id: c,
         patient_id: patient.attributes.id
       }))
       const reasons = await HospitalizationReasonPatient.collection()
         .add(reasonsToAttach)
         .invokeThen('save')
-      patient.attributes.hospitalization_reason = reasons.map(r => r.attributes)
+      patient.attributes.hr = reasons.map(r => r.attributes)
     }
 
     if (comorbidities) {
@@ -235,7 +235,7 @@ const PatientsController = {
 
   update: async ctx => {
     const { body } = ctx.request
-    const { hospitalization_reason, comorbidities } = body
+    const { hr, comorbidities } = body
 
     const patient = await new Patient({ id: ctx.params.id }).save(
       {
@@ -264,15 +264,15 @@ const PatientsController = {
       .where('patient_id', ctx.params.id)
       .destroy({ require: false })
 
-    if (hospitalization_reason) {
-      const reasonsToAttach = hospitalization_reason.map(c => ({
-        hospitalization_reason_id: c,
+    if (hr) {
+      const reasonsToAttach = hr.map(c => ({
+        hr_id: c,
         patient_id: patient.attributes.id
       }))
       const reasons = await HospitalizationReasonPatient.collection()
         .add(reasonsToAttach)
         .invokeThen('save')
-      patient.attributes.hospitalization_reason = reasons.map(r => r.attributes)
+      patient.attributes.hr = reasons.map(r => r.attributes)
     }
 
     if (comorbidities) {

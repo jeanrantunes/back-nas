@@ -43,7 +43,7 @@ export const up = knex =>
       table.datetime('hospitalization_date')
       table.enu('bed', ['A', 'B', 'C', 'D', 'E', 'F'])
     })
-    .createTable('hospitalization_reason', table => {
+    .createTable('hr', table => {
       table
         .uuid('id')
         .unique()
@@ -52,7 +52,7 @@ export const up = knex =>
       table.string('name').notNullable()
       table.string('to_search')
     })
-    .createTable('hospitalization_reason_patients', table => {
+    .createTable('hr_patients', table => {
       // table
       //   .uuid('id')
       //   .unique()
@@ -63,9 +63,9 @@ export const up = knex =>
         .references('id')
         .inTable('patients')
       table
-        .uuid('hospitalization_reason_id')
+        .uuid('hr_id')
         .references('id')
-        .inTable('hospitalization_reason')
+        .inTable('hr')
     })
     .createTable('comorbidities', table => {
       table
@@ -202,8 +202,8 @@ export const up = knex =>
 export const down = knex =>
   knex.schema
     .dropTableIfExists('users')
-    .dropTableIfExists('hospitalization_reason_patients')
-    .dropTableIfExists('hospitalization_reason')
+    .dropTableIfExists('hr_patients')
+    .dropTableIfExists('hr')
     .dropTableIfExists('comorbidities_patients')
     .dropTableIfExists('nas')
     .dropTableIfExists('patients')

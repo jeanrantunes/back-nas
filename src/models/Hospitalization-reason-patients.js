@@ -3,9 +3,9 @@ import Patients from './Patients'
 import HospitalizationReason from './Hospitalization-reason'
 
 const hospitalizationReasonPatients = Model({
-  tableName: 'hospitalization_reason_patients',
+  tableName: 'hr_patients',
   // uuid: true,
-  hospitalization_reason: function() {
+  hr: function() {
     return this.belongsTo(HospitalizationReason)
   },
   patients: function() {
