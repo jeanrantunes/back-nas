@@ -7,7 +7,7 @@ const UsersValidate = {
     validateSchema({
       body: {
         name: Joi.string().required(),
-        birthday: Joi.date().max('now'),
+        birthday: Joi.date(),
         outcome: Joi.string()
           .valid('pending', 'death', 'discharge')
           .required(),
@@ -25,8 +25,8 @@ const UsersValidate = {
         saps_3: Joi.number()
           .integer()
           .default(0),
-        outcome_date: Joi.date().max('now'),
-        hospitalization_date: Joi.date().max('now'),
+        outcome_date: Joi.date(),
+        hospitalization_date: Joi.date(),
         hr: Joi.array().items(Joi.string()),
         bed: Joi.string()
           .valid('A', 'B', 'C', 'D', 'E', 'F')
@@ -38,7 +38,7 @@ const UsersValidate = {
     validateSchema({
       body: {
         name: Joi.string().required(),
-        birthday: Joi.date().max('now'),
+        birthday: Joi.date(),
         outcome: Joi.string()
           .valid('pending', 'death', 'discharge')
           .default('pending'),
@@ -56,8 +56,8 @@ const UsersValidate = {
         saps_3: Joi.number()
           .integer()
           .default(0),
-        outcome_date: Joi.date().max('now'),
-        hospitalization_date: Joi.date().max('now'),
+        outcome_date: Joi.date(),
+        hospitalization_date: Joi.date(),
         hr: Joi.array().items(Joi.string()),
         bed: Joi.string()
           .valid('A', 'B', 'C', 'D', 'E', 'F')

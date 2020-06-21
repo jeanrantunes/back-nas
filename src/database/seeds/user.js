@@ -50,7 +50,8 @@ export const seed = async knex => {
       to_search: 'MARIA LUIZA',
       birthday: new Date('06/25/1763'),
       hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
-      bed: 'B'
+      bed: 'B',
+      origin: 'ps'
     },
     {
       id: uidPatient3,
@@ -58,7 +59,8 @@ export const seed = async knex => {
       to_search: 'SEU JORGE',
       birthday: new Date('06/25/1933'),
       hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
-      bed: 'C'
+      bed: 'C',
+      origin: 'ps'
     },
     {
       id: uidPatient4,
@@ -66,7 +68,8 @@ export const seed = async knex => {
       to_search: 'JOSE LUIZ',
       birthday: new Date('06/25/1936'),
       hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
-      bed: 'D'
+      bed: 'D',
+      origin: 'ps'
     },
     {
       id: uidPatient5,
@@ -74,7 +77,8 @@ export const seed = async knex => {
       to_search: 'NEYMAR',
       birthday: new Date('06/25/1963'),
       hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
-      bed: 'E'
+      bed: 'E',
+      origin: 'ps'
     },
     {
       id: uidPatient6,
@@ -82,7 +86,8 @@ export const seed = async knex => {
       to_search: 'SEU PAULO',
       birthday: new Date('06/25/1863'),
       hospitalization_date: new Date('2020-04-07T14:55:00.000Z'),
-      bed: 'F'
+      bed: 'F',
+      origin: 'ps'
     }
   ])
   const uidReason1 = uuidv4()
@@ -227,68 +232,68 @@ export const seed = async knex => {
       comorbidity_id: uidComorbidities6
     }
   ])
-  for (let i = 0; i < 1000; i++) {
-    await knex('nas').insert([
-      {
-        // id: uuidv4(),
-        patient_id: uidPatient1,
-        monitoring_and_controls: '1a',
-        laboratory_investigations: false,
-        medication_except_vasoactive_drugs: true,
-        hygiene_procedures: '4a',
-        caring_for_drains: true,
-        mobilization_and_positioning: '6a',
-        support_and_care: '7a',
-        administrative_and_managerial_tasks: '8a',
-        ventilatory_support: false,
-        lung_function: false,
-        artificial_airways: true,
-        vasoactive_drugs: false,
-        intravenous_replacement: false,
-        monitoring_of_the_left_atrium: false,
-        cardiorespiratory_resumption: false,
-        hemofiltration_techniques: false,
-        urine_output: false,
-        intracranial_pressure: false,
-        acidosis_treatment: false,
-        intravenous_hyperalimentation: false,
-        enteral_feeding: false,
-        specific_interventions_in_the_unit: false,
-        specific_interventions_outside_the_unit: true,
-        nas_date: new Date(),
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        // id: uuidv4(),
-        patient_id: uidPatient2,
-        monitoring_and_controls: '1a',
-        laboratory_investigations: false,
-        medication_except_vasoactive_drugs: true,
-        hygiene_procedures: '4a',
-        caring_for_drains: true,
-        mobilization_and_positioning: '6b',
-        support_and_care: '7a',
-        administrative_and_managerial_tasks: '8b',
-        ventilatory_support: false,
-        lung_function: true,
-        artificial_airways: false,
-        vasoactive_drugs: false,
-        intravenous_replacement: true,
-        monitoring_of_the_left_atrium: true,
-        cardiorespiratory_resumption: false,
-        hemofiltration_techniques: false,
-        urine_output: false,
-        intracranial_pressure: false,
-        acidosis_treatment: false,
-        intravenous_hyperalimentation: false,
-        enteral_feeding: true,
-        specific_interventions_in_the_unit: false,
-        specific_interventions_outside_the_unit: false,
-        nas_date: new Date(),
-        created_at: new Date(),
-        updated_at: new Date()
-      }
-    ])
-  }
+  // for (let i = 0; i < 1000; i++) {
+  //   await knex('nas').insert([
+  //     {
+  //       // id: uuidv4(),
+  //       patient_id: uidPatient1,
+  //       monitoring_and_controls: '1a',
+  //       laboratory_investigations: false,
+  //       medication_except_vasoactive_drugs: true,
+  //       hygiene_procedures: '4a',
+  //       caring_for_drains: true,
+  //       mobilization_and_positioning: '6a',
+  //       support_and_care: '7a',
+  //       administrative_and_managerial_tasks: '8a',
+  //       ventilatory_support: false,
+  //       lung_function: false,
+  //       artificial_airways: true,
+  //       vasoactive_drugs: false,
+  //       intravenous_replacement: false,
+  //       monitoring_of_the_left_atrium: false,
+  //       cardiorespiratory_resumption: false,
+  //       hemofiltration_techniques: false,
+  //       urine_output: false,
+  //       intracranial_pressure: false,
+  //       acidosis_treatment: false,
+  //       intravenous_hyperalimentation: false,
+  //       enteral_feeding: false,
+  //       specific_interventions_in_the_unit: false,
+  //       specific_interventions_outside_the_unit: true,
+  //       nas_date: new Date(),
+  //       created_at: new Date(),
+  //       updated_at: new Date()
+  //     },
+  //     {
+  //       // id: uuidv4(),
+  //       patient_id: uidPatient2,
+  //       monitoring_and_controls: '1a',
+  //       laboratory_investigations: false,
+  //       medication_except_vasoactive_drugs: true,
+  //       hygiene_procedures: '4a',
+  //       caring_for_drains: true,
+  //       mobilization_and_positioning: '6b',
+  //       support_and_care: '7a',
+  //       administrative_and_managerial_tasks: '8b',
+  //       ventilatory_support: false,
+  //       lung_function: true,
+  //       artificial_airways: false,
+  //       vasoactive_drugs: false,
+  //       intravenous_replacement: true,
+  //       monitoring_of_the_left_atrium: true,
+  //       cardiorespiratory_resumption: false,
+  //       hemofiltration_techniques: false,
+  //       urine_output: false,
+  //       intracranial_pressure: false,
+  //       acidosis_treatment: false,
+  //       intravenous_hyperalimentation: false,
+  //       enteral_feeding: true,
+  //       specific_interventions_in_the_unit: false,
+  //       specific_interventions_outside_the_unit: false,
+  //       nas_date: new Date(),
+  //       created_at: new Date(),
+  //       updated_at: new Date()
+  //     }
+  //   ])
+  // }
 }

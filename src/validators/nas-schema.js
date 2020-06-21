@@ -42,7 +42,7 @@ const UsersValidate = {
         enteral_feeding: Joi.boolean().default(true),
         specific_interventions_in_the_unit: Joi.boolean().default(false),
         specific_interventions_outside_the_unit: Joi.boolean().default(false),
-        nas_date: Joi.date().max('now')
+        nas_date: Joi.date()
       }
     }),
 
@@ -85,7 +85,7 @@ const UsersValidate = {
         enteral_feeding: Joi.boolean().default(true),
         specific_interventions_in_the_unit: Joi.boolean().default(false),
         specific_interventions_outside_the_unit: Joi.boolean().default(false),
-        nas_date: Joi.date().max('now')
+        nas_date: Joi.date()
       }
     })
 }

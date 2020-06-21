@@ -4,13 +4,6 @@ import Comorbidities from './Comorbidities'
 
 const comorbiditiesPatients = Model({
   tableName: 'comorbidities_patients',
-  // uuid: true,
-  comorbidities: function() {
-    return this.belongsTo(Comorbidities)
-  },
-  patients: function() {
-    return this.belongsTo(Patients)
-  },
   toJSON: function() {
     const comorbiditiesPatients = bookshelf.Model.prototype.toJSON.apply(
       this,

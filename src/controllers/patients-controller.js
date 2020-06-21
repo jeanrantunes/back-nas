@@ -205,31 +205,41 @@ const PatientsController = {
       outcome_date: body.outcome_date,
       hospitalization_date: body.hospitalization_date,
       bed: body.bed
-    }).save()
+    })
+      .save()
+      .then(pat => {
+        if (hr) {
+          pat.hr().attach(hr)
+        }
+        if (comorbidities) {
+          pat.comorbidities().attach(comorbidities)
+        }
+      })
 
-    if (hr) {
-      const reasonsToAttach = hr.map(c => ({
-        hr_id: c,
-        patient_id: patient.attributes.id
-      }))
-      const reasons = await HospitalizationReasonPatient.collection()
-        .add(reasonsToAttach)
-        .invokeThen('save')
-      patient.attributes.hr = reasons.map(r => r.attributes)
-    }
+    // if (hr) {
+    //   const reasonsToAttach = hr.map(c => ({
+    //     hr_id: c,
+    //     patient_id: patient.attributes.id
+    //   }))
 
-    if (comorbidities) {
-      const comorbiditiesToAttach = comorbidities.map(c => ({
-        comorbidity_id: c,
-        patient_id: patient.attributes.id
-      }))
+    //   const reasons = await HospitalizationReasonPatient.collection()
+    //     .add(reasonsToAttach)
+    //     .invokeThen('save')
+    //   patient.attributes.hr = reasons.map(r => r.attributes)
+    // }
 
-      const cms = await ComorbiditiesPatient.collection()
-        .add(comorbiditiesToAttach)
-        .invokeThen('save')
+    // if (comorbidities) {
+    //   const comorbiditiesToAttach = comorbidities.map(c => ({
+    //     comorbidity_id: c,
+    //     patient_id: patient.attributes.id
+    //   }))
 
-      patient.attributes.comorbidities = cms.map(r => r.attributes)
-    }
+    //   const cms = await ComorbiditiesPatient.collection()
+    //     .add(comorbiditiesToAttach)
+    //     .invokeThen('save')
+
+    //   patient.attributes.comorbidities = cms.map(r => r.attributes)
+    // }
     return patient
   },
 
@@ -237,56 +247,73 @@ const PatientsController = {
     const { body } = ctx.request
     const { hr, comorbidities } = body
 
-    const patient = await new Patient({ id: ctx.params.id }).save(
-      {
-        name: body.name,
-        birthday: body.birthday,
-        origin: body.origin,
-        to_search: body.name
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toUpperCase(),
-        outcome: body.outcome,
-        saps_3: body.saps_3,
-        outcome_date: body.outcome_date,
-        hospitalization_date: body.hospitalization_date,
-        bed: body.bed
-      },
-      { method: 'update' }
-    )
+    const patient = await new Patient({ id: ctx.params.id })
+      .save(
+        {
+          name: body.name,
+          birthday: body.birthday,
+          origin: body.origin,
+          to_search: body.name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase(),
+          outcome: body.outcome,
+          saps_3: body.saps_3,
+          outcome_date: body.outcome_date,
+          hospitalization_date: body.hospitalization_date,
+          bed: body.bed
+        },
+        { method: 'update' }
+      )
+      .then(async pat => {
+        await new HospitalizationReasonPatient()
+          .where('patient_id', ctx.params.id)
+          .destroy({ require: false })
+        await new ComorbiditiesPatient()
+          .where('patient_id', ctx.params.id)
+          .destroy({ require: false })
 
-    delete patient.attributes.to_search
+        if (hr) {
+          pat.hr().attach(hr)
+        }
+        if (comorbidities) {
+          pat.comorbidities().attach(comorbidities)
+        }
+      })
 
-    await new HospitalizationReasonPatient()
-      .where('patient_id', ctx.params.id)
-      .destroy({ require: false })
-    await new ComorbiditiesPatient()
-      .where('patient_id', ctx.params.id)
-      .destroy({ require: false })
+    // delete patient.attributes.to_search
 
-    if (hr) {
-      const reasonsToAttach = hr.map(c => ({
-        hr_id: c,
-        patient_id: patient.attributes.id
-      }))
-      const reasons = await HospitalizationReasonPatient.collection()
-        .add(reasonsToAttach)
-        .invokeThen('save')
-      patient.attributes.hr = reasons.map(r => r.attributes)
-    }
+    // await new HospitalizationReasonPatient()
+    //   .where('patient_id', ctx.params.id)
+    //   .destroy({ require: false })
+    // await new ComorbiditiesPatient()
+    //   .where('patient_id', ctx.params.id)
+    //   .destroy({ require: false })
 
-    if (comorbidities) {
-      const comorbiditiesToAttach = comorbidities.map(c => ({
-        comorbidity_id: c,
-        patient_id: patient.attributes.id
-      }))
+    // if (hr) {
+    //   const reasonsToAttach = hr.map(c => ({
+    //     hr_id: c,
+    //     patient_id: patient.attributes.id
+    //   }))
 
-      const cms = await ComorbiditiesPatient.collection()
-        .add(comorbiditiesToAttach)
-        .invokeThen('save')
+    //   const reasons = await HospitalizationReasonPatient.collection()
+    //     .add(reasonsToAttach)
+    //     .invokeThen('save')
+    //   patient.attributes.hr = reasons.map(r => r.attributes)
+    // }
 
-      patient.attributes.comorbidities = cms.map(r => r.attributes)
-    }
+    // if (comorbidities) {
+    //   const comorbiditiesToAttach = comorbidities.map(c => ({
+    //     comorbidity_id: c,
+    //     patient_id: patient.attributes.id
+    //   }))
+
+    //   const cms = await ComorbiditiesPatient.collection()
+    //     .add(comorbiditiesToAttach)
+    //     .invokeThen('save')
+
+    //   patient.attributes.comorbidities = cms.map(r => r.attributes)
+    // }
 
     return patient
   },
@@ -294,15 +321,15 @@ const PatientsController = {
   destroy: async ctx => {
     const idPatient = ctx.params.id
 
-    new HospitalizationReasonPatient()
+    await new HospitalizationReasonPatient()
       .where('patient_id', idPatient)
       .destroy({ require: false })
 
-    new ComorbiditiesPatient()
+    await new ComorbiditiesPatient()
       .where('patient_id', idPatient)
       .destroy({ require: false })
 
-    new Nas().where('patient_id', idPatient).destroy({ require: false })
+    await new Nas().where('patient_id', idPatient).destroy({ require: false })
 
     return new Patient({ id: idPatient }).destroy()
   }

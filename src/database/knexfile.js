@@ -1,6 +1,5 @@
 import path from 'path'
 import { DATABASE } from '../config'
-console.log(process.env.NODE_ENV)
 export const development = {
   client: 'mysql',
   connection: DATABASE,
