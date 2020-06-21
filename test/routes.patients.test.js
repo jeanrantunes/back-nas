@@ -324,7 +324,6 @@ describe('TEST PATIENTS', () => {
           'birthday',
           'outcome',
           'origin',
-
           'saps_3',
           'comorbidities',
           'hr',

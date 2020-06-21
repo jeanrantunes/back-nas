@@ -210,9 +210,11 @@ const PatientsController = {
       .then(pat => {
         if (hr) {
           pat.hr().attach(hr)
+          pat.attributes.hr = hr
         }
         if (comorbidities) {
           pat.comorbidities().attach(comorbidities)
+          pat.attributes.comorbidities = comorbidities
         }
         return pat
       })
@@ -251,9 +253,11 @@ const PatientsController = {
           .destroy({ require: false })
 
         if (hr) {
+          pat.attributes.hr = hr
           pat.hr().attach(hr)
         }
         if (comorbidities) {
+          pat.attributes.comorbidities = comorbidities
           pat.comorbidities().attach(comorbidities)
         }
         return pat
