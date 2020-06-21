@@ -214,32 +214,9 @@ const PatientsController = {
         if (comorbidities) {
           pat.comorbidities().attach(comorbidities)
         }
+        return pat
       })
 
-    // if (hr) {
-    //   const reasonsToAttach = hr.map(c => ({
-    //     hr_id: c,
-    //     patient_id: patient.attributes.id
-    //   }))
-
-    //   const reasons = await HospitalizationReasonPatient.collection()
-    //     .add(reasonsToAttach)
-    //     .invokeThen('save')
-    //   patient.attributes.hr = reasons.map(r => r.attributes)
-    // }
-
-    // if (comorbidities) {
-    //   const comorbiditiesToAttach = comorbidities.map(c => ({
-    //     comorbidity_id: c,
-    //     patient_id: patient.attributes.id
-    //   }))
-
-    //   const cms = await ComorbiditiesPatient.collection()
-    //     .add(comorbiditiesToAttach)
-    //     .invokeThen('save')
-
-    //   patient.attributes.comorbidities = cms.map(r => r.attributes)
-    // }
     return patient
   },
 
@@ -279,41 +256,8 @@ const PatientsController = {
         if (comorbidities) {
           pat.comorbidities().attach(comorbidities)
         }
+        return pat
       })
-
-    // delete patient.attributes.to_search
-
-    // await new HospitalizationReasonPatient()
-    //   .where('patient_id', ctx.params.id)
-    //   .destroy({ require: false })
-    // await new ComorbiditiesPatient()
-    //   .where('patient_id', ctx.params.id)
-    //   .destroy({ require: false })
-
-    // if (hr) {
-    //   const reasonsToAttach = hr.map(c => ({
-    //     hr_id: c,
-    //     patient_id: patient.attributes.id
-    //   }))
-
-    //   const reasons = await HospitalizationReasonPatient.collection()
-    //     .add(reasonsToAttach)
-    //     .invokeThen('save')
-    //   patient.attributes.hr = reasons.map(r => r.attributes)
-    // }
-
-    // if (comorbidities) {
-    //   const comorbiditiesToAttach = comorbidities.map(c => ({
-    //     comorbidity_id: c,
-    //     patient_id: patient.attributes.id
-    //   }))
-
-    //   const cms = await ComorbiditiesPatient.collection()
-    //     .add(comorbiditiesToAttach)
-    //     .invokeThen('save')
-
-    //   patient.attributes.comorbidities = cms.map(r => r.attributes)
-    // }
 
     return patient
   },
