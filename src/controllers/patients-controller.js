@@ -109,7 +109,23 @@ const PatientsController = {
       }
     })
 
-    const patientWithPagination = await patientsFiltered
+    let patientWithPagination
+    /*get all patients*/
+    if (items_per_page === 'all') {
+      patientWithPagination = await patientsFiltered.fetchAll({
+        withRelated: [hr && 'hr', comorbidities && 'comorbidities']
+      })
+      return {
+        data: patientWithPagination,
+        metadata: {
+          total: patientWithPagination.models.length,
+          page: 0,
+          items_per_page: 0
+        }
+      }
+    }
+
+    patientWithPagination = await patientsFiltered
       .query(function(qb) {
         qb.orderBy(order_by, order_type)
         qb.offset(page * items_per_page).limit(items_per_page)

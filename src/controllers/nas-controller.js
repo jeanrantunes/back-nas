@@ -48,6 +48,49 @@ const NasController = {
       patientsIds = patients.map(patient => patient.attributes.id)
     }
 
+    /*get all nas*/
+    if (items_per_page === 'all') {
+      const nas = await new Nas()
+        .query(function(qb) {
+          if (id) {
+            qb.where('id', id)
+          }
+          /* filter by name */
+          if (patientsIds) {
+            qb.where('patient_id', 'in', patientsIds)
+          }
+
+          if (patient_id) {
+            qb.where('patient_id', patient_id)
+          }
+          if (created_start_date && created_end_date) {
+            if (created_start_date === created_end_date) {
+              qb.where('nas_date', '>=', new Date(created_start_date))
+              qb.where('nas_date', '<=', plusOneDay(created_start_date))
+            } else {
+              qb.where('nas_date', '>=', created_start_date)
+              qb.where('nas_date', '<=', plusOneDay(created_end_date))
+            }
+          } else if (created_start_date) {
+            qb.where('nas_date', '>=', new Date(created_start_date))
+            qb.where('nas_date', '<=', plusOneDay(created_start_date))
+          } else if (created_end_date) {
+            qb.where('nas_date', '>=', plusOneDay(created_end_date))
+            qb.where('nas_date', '<=', new Date(created_end_date))
+          }
+          qb.orderBy(order_by, order_type)
+        })
+        .fetchAll()
+      return {
+        data: nas,
+        metadata: {
+          total: nas.models.length,
+          page: 0,
+          items_per_page: 0
+        }
+      }
+    }
+
     /* filter */
     const nasFiltered = await new Nas()
       .query(function(qb) {
