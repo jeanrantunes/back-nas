@@ -15,7 +15,7 @@ app.use(Logger())
 
 app.use(
   Cors({
-    origin: 'Access-Control-Allow-Origin',
+    origin: '*',
     allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
     exposeHeaders: ['X-Request-Id']
   })
