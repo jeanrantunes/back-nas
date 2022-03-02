@@ -1,7 +1,7 @@
 import path from 'path'
 import { DATABASE } from '../config'
 export const development = {
-  client: 'mysql',
+  client: 'pg',
   connection: DATABASE,
   migrations: {
     directory: path.resolve(__dirname, 'migrations')
@@ -9,7 +9,7 @@ export const development = {
 }
 
 export const production = {
-  client: 'mysql',
+  client: 'pg',
   connection: DATABASE,
   // connection: {
   //   host: 'mysql669.umbler.com',

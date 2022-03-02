@@ -9,7 +9,7 @@ export const seed = async knex => {
       id: uuidv4(),
       name: 'Jean Antunes',
       email: 'jeanrantunes93@gmail.com',
-      password: await encryptPassword('12345'),
+      password: await encryptPassword('Fohu0059'),
       role: 'ADMIN',
       created_at: new Date(),
       updated_at: new Date()
