@@ -1,6 +1,5 @@
 import Koa from 'koa'
 import Logger from 'koa-logger'
-import Cors from '@koa/cors'
 import koaBody from 'koa-body'
 import jwt from 'koa-jwt'
 
@@ -12,13 +11,6 @@ import { JWT_SECRET } from 'config'
 const app = new Koa()
 
 app.use(Logger())
-
-app.use(
-  Cors({
-    allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
-    exposeHeaders: ['X-Request-Id']
-  })
-)
 
 app.use(koaBody({ multipart: true }))
 
