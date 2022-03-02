@@ -11,8 +11,6 @@ import { JWT_SECRET } from 'config'
 
 const app = new Koa()
 
-app.use(Logger())
-
 app.use(
   Cors({
     origin: '*',
@@ -20,6 +18,8 @@ app.use(
     exposeHeaders: ['X-Request-Id']
   })
 )
+
+app.use(Logger())
 
 app.use(koaBody({ multipart: true }))
 
