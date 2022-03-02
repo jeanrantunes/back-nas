@@ -1,6 +1,7 @@
 import Koa from 'koa'
+import helmet from 'koa-helmet'
 import Logger from 'koa-logger'
-// import Cors from '@koa/cors'
+import Cors from '@koa/cors'
 import koaBody from 'koa-body'
 import jwt from 'koa-jwt'
 
@@ -11,13 +12,16 @@ import { JWT_SECRET } from 'config'
 
 const app = new Koa()
 
-// app.use(
-//   Cors({
-//     origin: '*',
-//     allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
-//     exposeHeaders: ['X-Request-Id']
-//   })
-// )
+app.use(
+  Cors({
+    origin: '*',
+    allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
+    exposeHeaders: ['X-Request-Id']
+  })
+)
+
+app.use(helmet())
+
 app.use(async (ctx, next) => {
   ctx.set('Access-Control-Allow-Origin', '*')
   ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
