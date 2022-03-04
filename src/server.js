@@ -12,13 +12,13 @@ import { JWT_SECRET } from 'config'
 
 const app = new Koa()
 
-app.use(
-  Cors({
-    origin: '*',
-    allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
-    exposeHeaders: ['X-Request-Id']
-  })
-)
+// app.use(
+//   Cors({
+//     origin: '*',
+//     allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
+//     exposeHeaders: ['X-Request-Id']
+//   })
+// )
 
 app.use(helmet())
 
