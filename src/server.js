@@ -12,21 +12,15 @@ import { JWT_SECRET } from 'config'
 
 const app = new Koa()
 
-// app.use(
-//   Cors({
-//     origin: '*',
-//     allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
-//     exposeHeaders: ['X-Request-Id']
-//   })
-// )
+app.use(
+  Cors({
+    origin: '*',
+    allowMethods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH'],
+    exposeHeaders: ['X-Request-Id']
+  })
+)
 
 app.use(helmet())
-
-app.use(async (ctx, next) => {
-  ctx.set('Access-Control-Allow-Origin', '*')
-  ctx.set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
-  await next()
-})
 
 app.use(Logger())
 
